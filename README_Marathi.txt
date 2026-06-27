@@ -1,3 +1,3 @@
-School ERP V24 Standard Management Edition
-Commit Summary: School ERP V24 Standard Management Edition
-Default: डेटा auto delete होत नाही. Backup JSON रोज डाउनलोड करा.
+School ERP V25 All Menu Complete Fix
+सर्व मेनू पुन्हा add केले आहेत.
+Commit Summary: School ERP V25 All Menu Complete Fix

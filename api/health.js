@@ -1,1 +1,1 @@
-export default function handler(req,res){res.status(200).json({status:true,message:'School ERP V24 Standard API working'})}
+export default function handler(req,res){res.status(200).json({status:true,message:'School ERP V25 All Menu Complete API working'})}
