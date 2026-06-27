@@ -1,8 +1,1 @@
-export default async function handler(req,res){
- res.setHeader("Access-Control-Allow-Origin","*");
- const q=req.method==="POST"?req.body:req.query;
- const {api_token,mobile,message,device_id}=q;
- const url="https://whatsbot.tech/api/send_sms?"+new URLSearchParams({api_token:api_token||"",mobile:mobile||"",message:message||"",device_id:device_id||""}).toString();
- try{const r=await fetch(url); const text=await r.text(); res.status(200).send(text);}
- catch(e){res.status(500).json({status:false,error:String(e),url});}
-}
+export default async function handler(req,res){res.setHeader("Access-Control-Allow-Origin","*");const q=req.method==="POST"?req.body:req.query;const url="https://whatsbot.tech/api/send_sms?"+new URLSearchParams({api_token:q.api_token||"",mobile:q.mobile||"",message:q.message||"",device_id:q.device_id||""}).toString();try{const r=await fetch(url);res.status(200).send(await r.text())}catch(e){res.status(500).json({status:false,error:String(e),url})}}

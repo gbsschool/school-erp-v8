@@ -1,8 +1,1 @@
-export default async function handler(req,res){
- res.setHeader("Access-Control-Allow-Origin","*");
- const q=req.method==="POST"?req.body:req.query;
- const type=q.type||"send_img"; delete q.type;
- const url="https://whatsbot.tech/api/"+type+"?"+new URLSearchParams(q).toString();
- try{const r=await fetch(url); const text=await r.text(); res.status(200).send(text);}
- catch(e){res.status(500).json({status:false,error:String(e),url});}
-}
+export default async function handler(req,res){res.setHeader("Access-Control-Allow-Origin","*");const q=req.method==="POST"?req.body:req.query;const type=q.type||"send_img";delete q.type;const url="https://whatsbot.tech/api/"+type+"?"+new URLSearchParams(q).toString();try{const r=await fetch(url);res.status(200).send(await r.text())}catch(e){res.status(500).json({status:false,error:String(e),url})}}
