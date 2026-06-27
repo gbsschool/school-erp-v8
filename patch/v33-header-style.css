@@ -1,0 +1,18 @@
+
+.erp-v33-top{
+  background:linear-gradient(135deg,#063b5d,#08796f);
+  color:white;text-align:center;padding:14px 8px;border-bottom:4px solid #d78913;
+  font-family:'Nirmala UI',Arial,sans-serif;
+}
+.erp-v33-top .sanstha{font-size:18px;font-weight:700}
+.erp-v33-top .managed{font-size:14px;margin-top:2px}
+.erp-v33-top .school{font-size:24px;font-weight:900;margin-top:4px}
+.erp-v33-top .address,.erp-v33-top .year{font-size:15px;margin-top:3px}
+.cert-print{
+  font-family:'Nirmala UI',Arial,sans-serif;
+  border:2px solid #111;padding:22px;background:white;color:#111;
+}
+.cert-print h1,.cert-print h2,.cert-print h3{text-align:center;margin:4px 0}
+.cert-table{width:100%;border-collapse:collapse;margin-top:15px}
+.cert-table td,.cert-table th{border:1px solid #bbb;padding:8px}
+.sign-row{display:flex;justify-content:space-between;margin-top:55px}
