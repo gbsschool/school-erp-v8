@@ -3,21 +3,21 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>School ERP V12 Enterprise AutoPilot</title>
+<title>School ERP V13 Logo Settings</title>
 <link rel="manifest" href="manifest.json"/>
 <link rel="stylesheet" href="style.css"/>
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 </head>
 <body>
 <header class="hero">
   <div class="shade">
-    <div class="logo" id="logoPreview">शाळा</div>
+    <img id="schoolLogoImg" class="schoolLogo" src="assets/school-logo.jpg" onerror="this.style.display='none';document.getElementById('logoTextBox').style.display='flex'">
+    <div class="logoText" id="logoTextBox">शाळा</div>
     <h1 id="schoolNameTitle">स्व. गुरुबक्षसिंग साबरवाल माध्यमिक व उच्च माध्यमिक विद्यालय</h1>
     <h2 id="schoolAddressTitle">नायगाव (भिकापूर)</h2>
-    <p>Website + Mobile App AutoPilot ERP</p>
+    <p id="schoolSubTitle">Website + Mobile App AutoPilot ERP</p>
   </div>
 </header>
 
@@ -45,7 +45,7 @@
     <div><b>Auto</b><span>Parent Message</span></div>
     <div><b>PWA</b><span>Mobile App Ready</span></div>
   </div>
-  <p class="note">पालकांना विद्यार्थ्याशी संबंधित मेसेज जातील. Summary फक्त मुख्याध्यापक, अध्यक्ष आणि सचिव यांना जाईल.</p>
+  <p class="note">Settings मध्ये शाळेचे नाव, पत्ता, लोगो, मोबाइल नंबर, WhatsApp API माहिती तुम्ही स्वतः बदलू शकता.</p>
  </div>
 </section>
 
@@ -73,7 +73,7 @@
 </div></section>
 
 <section id="studentAtt" class="page"><div class="card">
-<h2>विद्यार्थी उपस्थिती — प्रत्येक विद्यार्थ्यासाठी Present / Absent</h2>
+<h2>विद्यार्थी उपस्थिती</h2>
 <div class="form"><input id="saDate" type="date"><select id="saClass"><option>8वी</option><option>9वी</option><option>10वी</option></select><button onclick="loadStudentAttendance()">यादी दाखवा</button><button onclick="saveStudentAttendance()">Save + Auto Message</button></div>
 <div id="studentAttList"></div>
 </div></section>
@@ -93,13 +93,11 @@
 <input id="hwPhoto" type="file" accept="image/*" capture="environment">
 <button onclick="loadHomeworkStudents()">विद्यार्थी यादी</button><button onclick="saveHomework()">Save + Parent Messages</button>
 </div>
-<p class="note">गृहपाठ न केलेल्या विद्यार्थ्यांना टिक करा. त्या पालकांना स्वतंत्र मेसेज जाईल.</p>
 <div id="homeworkList"></div>
 </div></section>
 
 <section id="answerPhotos" class="page"><div class="card">
 <h2>उत्तरपत्रिका / वही / नोटबुक फोटो</h2>
-<p class="note">कॅमेरा input उपलब्ध आहे. प्रत्यक्ष फोटो Firebase Storage मध्ये सेव्ह करण्यासाठी Blaze Plan आवश्यक आहे. सध्या फोटोचे नाव/नोंद Firestore मध्ये सेव्ह होते.</p>
 <div class="form">
 <select id="apClass"><option>8वी</option><option>9वी</option><option>10वी</option></select>
 <input id="apStudent" placeholder="विद्यार्थी नाव">
@@ -123,8 +121,6 @@
 
 <section id="excel" class="page"><div class="card">
 <h2>Excel Upload / Download</h2>
-<p><b>Students columns:</b> name, className, parentMobile, dob</p>
-<p><b>Teachers columns:</b> name, mobile, subject, className, userId, password</p>
 <div class="form">
 <select id="excelType"><option value="students">Students Upload</option><option value="teachers">Teachers Upload</option></select>
 <input type="file" id="excelFile" accept=".xlsx,.xls,.csv">
@@ -136,19 +132,25 @@
 </div></section>
 
 <section id="settings" class="page"><div class="card">
-<h2>Settings</h2>
+<h2>Settings — तुम्ही स्वतः बदलू शकता</h2>
 <div class="form">
 <input id="schoolName" placeholder="शाळेचे नाव">
-<input id="schoolAddress" placeholder="पत्ता">
+<input id="schoolAddress" placeholder="शाळेचा पत्ता">
+<input id="schoolSubtitle" placeholder="उपशीर्षक">
+<input id="logoText" placeholder="Logo Text उदा. GBS">
+<input id="logoUrl" placeholder="Logo URL / assets/school-logo.jpg">
+<input id="logoUpload" type="file" accept="image/*">
 <input id="proxyUrl" placeholder="https://your-vercel-url.vercel.app/api">
 <input id="apiToken" placeholder="WhatsBot API Token">
 <input id="deviceId" placeholder="Device ID">
 <input id="principalMobile" placeholder="मुख्याध्यापक मोबाईल" maxlength="10">
 <input id="presidentMobile" placeholder="अध्यक्ष मोबाईल" maxlength="10">
 <input id="secretaryMobile" placeholder="सचिव मोबाईल" maxlength="10">
-<input id="logoText" placeholder="Logo Text उदा. GBS">
-<button onclick="saveSettings()">Settings Save</button><button onclick="testMessage()">Test WhatsApp</button>
+<button onclick="previewLogoUpload()">Logo Preview</button>
+<button onclick="saveSettings()">Settings Save</button>
+<button onclick="testMessage()">Test WhatsApp</button>
 </div>
+<p class="note">Logo Upload केल्यावर तो त्या ब्राउजरमध्ये दिसेल. कायमस्वरूपी सर्वांना दिसण्यासाठी लोगो फाइल <b>assets/school-logo.jpg</b> म्हणून प्रोजेक्टमध्ये ठेवली आहे.</p>
 </div></section>
 
 <section id="reports" class="page"><div class="card">
