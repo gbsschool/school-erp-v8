@@ -2,59 +2,134 @@
 <html lang="mr">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>School ERP V18 Core + SMS API</title>
+<title>School ERP V19 Enterprise Phase 2</title>
 <link rel="stylesheet" href="style.css"><link rel="manifest" href="manifest.json">
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 </head>
 <body>
 <header class="hero"><div class="shade">
-<div class="logoText">शाळा</div>
+<div class="logoText" id="logoBox">शाळा</div>
 <h1 id="schoolTitle">स्व. गुरुबक्षसिंग साबरवाल माध्यमिक व उच्च माध्यमिक विद्यालय</h1>
 <h2 id="schoolAddressTitle">नायगाव (भिकापूर)</h2>
 <p id="academicYear">शैक्षणिक वर्ष 2025 - 26</p>
 </div></header>
-<nav>
+
+<nav id="nav">
 <button class="active" onclick="show('dashboard',this)">मुख्यपृष्ठ</button>
 <button onclick="show('students',this)">विद्यार्थी</button>
 <button onclick="show('teachers',this)">शिक्षक</button>
-<button onclick="show('staff',this)">कर्मचारी</button>
 <button onclick="show('attendance',this)">उपस्थिती</button>
-<button onclick="show('templates',this)">Templates</button>
-<button onclick="show('whatsapp',this)">WhatsApp API</button>
+<button onclick="show('results',this)">निकालपत्र</button>
+<button onclick="show('certificates',this)">प्रमाणपत्रे</button>
+<button onclick="show('library',this)">ग्रंथालय</button>
+<button onclick="show('distribution',this)">पुस्तक/वाटप</button>
+<button onclick="show('committees',this)">समित्या</button>
+<button onclick="show('fees',this)">फी</button>
+<button onclick="show('inventory',this)">स्टॉक</button>
+<button onclick="show('whatsapp',this)">WhatsApp</button>
 <button onclick="show('smsapi',this)">SMS API</button>
-<button onclick="show('media',this)">Audio/Image/PDF</button>
 <button onclick="show('reports',this)">Reports</button>
 <button onclick="show('settings',this)">Settings</button>
 </nav>
+
 <main>
 <section id="dashboard" class="page show"><div class="card">
-<h2>Phase 1 - Core ERP + SMS API</h2>
-<div class="tiles"><div><b id="studentCount">0</b><span>विद्यार्थी</span></div><div><b id="teacherCount">0</b><span>शिक्षक</span></div><div><b id="staffCount">0</b><span>कर्मचारी</span></div><div><b>V18</b><span>WhatsApp + SMS</span></div></div>
-<p class="note">WhatsApp नंबर <b>917507514475</b> या स्वरूपात. SMS API साठी URL Template दिले आहे.</p>
+<h2>School ERP V19 Enterprise Dashboard</h2>
+<div class="tiles">
+<div><b id="studentCount">0</b><span>विद्यार्थी</span></div>
+<div><b id="teacherCount">0</b><span>शिक्षक</span></div>
+<div><b id="bookCount">0</b><span>पुस्तके</span></div>
+<div><b id="feeDue">0</b><span>फी थकबाकी</span></div>
+</div>
+<p class="note">V19 मध्ये निकालपत्र, प्रमाणपत्रे, ग्रंथालय, पुस्तक/गणवेश वाटप, समित्या, फी, स्टॉक, WhatsApp + SMS API जोडले आहेत.</p>
 </div></section>
-<section id="students" class="page"><div class="card"><h2>विद्यार्थी</h2><div class="form">
-<input id="sId" type="hidden"><input id="sName" placeholder="विद्यार्थी नाव"><select id="sClass"><option>8वी</option><option>9वी</option><option>10वी</option></select><input id="sRoll" placeholder="हजेरी क्रमांक"><input id="sParent" placeholder="पालक WhatsApp/SMS No. उदा. 917507514475" maxlength="12"><button onclick="saveStudent()">Save Student</button><button onclick="clearStudent()">Clear</button>
+
+<section id="students" class="page"><div class="card">
+<h2>विद्यार्थी संपूर्ण प्रोफाइल</h2>
+<div class="form">
+<input id="sId" type="hidden"><input id="sName" placeholder="विद्यार्थी नाव">
+<select id="sClass"><option>8वी</option><option>9वी</option><option>10वी</option></select>
+<input id="sRoll" placeholder="हजेरी क्रमांक"><input id="sParent" placeholder="पालक WhatsApp/SMS 917507514475" maxlength="12">
+<input id="sMother" placeholder="आईचे नाव"><input id="sFather" placeholder="वडिलांचे नाव">
+<input id="sDob" type="date"><input id="sAadhar" maxlength="12" placeholder="आधार क्रमांक">
+<input id="sUdise" placeholder="UDISE / Student ID"><input id="sCaste" placeholder="जात / प्रवर्ग">
+<input id="sAddress" placeholder="पत्ता"><input id="sBlood" placeholder="Blood Group">
+<button onclick="saveStudent()">Save Student</button><button onclick="clearStudent()">Clear</button>
 </div><table id="studentTable"></table></div></section>
-<section id="teachers" class="page"><div class="card"><h2>शिक्षक</h2><div class="form">
-<input id="tId" type="hidden"><input id="tName" placeholder="शिक्षक नाव"><input id="tMobile" placeholder="WhatsApp/SMS No. 917507514475" maxlength="12"><input id="tSubject" placeholder="विषय"><select id="tClass"><option>सर्व</option><option>8वी</option><option>9वी</option><option>10वी</option></select><button onclick="saveTeacher()">Save Teacher</button><button onclick="clearTeacher()">Clear</button>
+
+<section id="teachers" class="page"><div class="card">
+<h2>शिक्षक माहिती</h2><div class="form">
+<input id="tId" type="hidden"><input id="tName" placeholder="शिक्षक नाव"><input id="tMobile" placeholder="मोबाईल 91XXXXXXXXXX" maxlength="12"><input id="tSubject" placeholder="विषय">
+<select id="tClass"><option>सर्व</option><option>8वी</option><option>9वी</option><option>10वी</option></select>
+<input id="tJoin" type="date"><input id="tSalary" placeholder="पगार/मानधन">
+<button onclick="saveTeacher()">Save Teacher</button><button onclick="clearTeacher()">Clear</button>
 </div><table id="teacherTable"></table></div></section>
-<section id="staff" class="page"><div class="card"><h2>कर्मचारी</h2><div class="form">
-<input id="eName" placeholder="कर्मचारी नाव"><input id="eMobile" placeholder="मोबाईल"><select id="eRole"><option>क्लर्क</option><option>शिपाई</option><option>ग्रंथपाल</option><option>इतर</option></select><input id="eSalary" type="number" placeholder="मानधन"><button onclick="saveStaff()">Save Staff</button>
-</div><table id="staffTable"></table></div></section>
-<section id="attendance" class="page"><div class="card"><h2>विद्यार्थी उपस्थिती</h2><div class="form">
-<input id="attDate" type="date"><select id="attClass"><option>8वी</option><option>9वी</option><option>10वी</option></select><button onclick="loadAttendance()">यादी दाखवा</button><button onclick="saveAttendance()">Save Attendance</button><button onclick="sendAbsentBoth()">Absent WhatsApp + SMS URLs</button>
+
+<section id="attendance" class="page"><div class="card">
+<h2>विद्यार्थी उपस्थिती</h2><div class="form">
+<input id="attDate" type="date"><select id="attClass"><option>8वी</option><option>9वी</option><option>10वी</option></select>
+<button onclick="loadAttendance()">यादी दाखवा</button><button onclick="saveAttendance()">Save Attendance</button><button onclick="sendAbsentBoth()">Absent WhatsApp + SMS</button>
 </div><div id="attList"></div></div></section>
-<section id="templates" class="page"><div class="card"><h2>Templates</h2><div class="form">
-<select id="tplType" onchange="fillTpl()"><option value="">Template निवडा</option><option>अनुपस्थिती</option><option>गृहपाठ केला नाही</option><option>फी सूचना</option><option>परीक्षा सूचना</option><option>निकाल सूचना</option><option>पालक सभा</option><option>सुट्टी सूचना</option><option>सामान्य सूचना</option></select><select id="tplLang" onchange="fillTpl()"><option value="mr">मराठी</option><option value="hi">हिंदी</option><option value="en">English</option></select><textarea id="tplText"></textarea><button onclick="saveTemplate()">Template Save</button><button onclick="generateTemplateBoth()">WhatsApp + SMS URLs</button>
-</div><textarea id="bulkUrls" readonly></textarea><table id="tplTable"></table></div></section>
-<section id="whatsapp" class="page"><div class="card"><h2>WhatsApp API</h2><div class="form">
-<input id="waBase" value="https://whatsbot.tech/api" placeholder="WhatsApp API Base"><input id="waToken" placeholder="WhatsApp API Token"><input id="waDevice" value="46120" placeholder="Device ID"><input id="waDefault" value="917507514475" maxlength="12"><textarea id="waMsg">Test WhatsApp message from School ERP V18</textarea><button onclick="saveWhatsApp()">Save WhatsApp API</button><button onclick="sendWhatsAppTest()">Send WhatsApp Test</button>
+
+<section id="results" class="page"><div class="card">
+<h2>महाराष्ट्र बोर्ड नमुन्यानुसार निकालपत्र</h2>
+<div class="form">
+<select id="resStudent"></select><select id="resExam"><option>प्रथम सत्र</option><option>द्वितीय सत्र</option><option>वार्षिक निकाल</option></select>
+<input id="resYear" placeholder="सन 2025 - 26"><input id="resAttendance" placeholder="वार्षिक उपस्थिती उदा. 92%">
+<textarea id="resMarks" placeholder="मराठी:50/100, हिंदी:43/100, इंग्रजी:53/100, गणित:69/100, विज्ञान:61/100, समाजशास्त्र:57/100"></textarea>
+<input id="resActivities" placeholder="शारीरिक शिक्षण: A, जलसुरक्षा: A, संरक्षणशास्त्र: A"><input id="resRemark" placeholder="निकाल / Remark">
+<button onclick="saveResult()">Save Result</button><button onclick="makeResultCard()">Generate Report Card</button><button onclick="window.print()">Print/PDF</button><button onclick="sendResultBoth()">WhatsApp + SMS निकाल</button>
+</div><div id="resultCard"></div><table id="resultTable"></table></div></section>
+
+<section id="certificates" class="page"><div class="card">
+<h2>प्रमाणपत्रे</h2>
+<div class="form">
+<select id="certStudent"></select><select id="certType"><option>Bonafide Certificate</option><option>Leaving Certificate</option><option>Character Certificate</option><option>Fee Certificate</option><option>Study Certificate</option></select>
+<input id="certReason" placeholder="कारण / उद्देश"><button onclick="makeCertificate()">Certificate तयार करा</button><button onclick="window.print()">Print/PDF</button>
+</div><div id="certBox"></div></div></section>
+
+<section id="library" class="page"><div class="card">
+<h2>ग्रंथालय व्यवस्थापन</h2><div class="form">
+<input id="bookTitle" placeholder="पुस्तक नाव"><input id="bookAuthor" placeholder="लेखक"><input id="bookIsbn" placeholder="ISBN/Barcode"><input id="bookQty" type="number" placeholder="प्रमाण"><button onclick="saveBook()">Save Book</button>
+<select id="issueStudent"></select><select id="issueBook"></select><input id="issueDate" type="date"><button onclick="issueBookFn()">पुस्तक वाटप</button>
+</div><table id="bookTable"></table><h3>Issue Register</h3><table id="issueTable"></table></div></section>
+
+<section id="distribution" class="page"><div class="card">
+<h2>मोफत पुस्तक / गणवेश / साहित्य वाटप</h2><div class="form">
+<select id="distStudent"></select><select id="distItem"><option>पाठ्यपुस्तक</option><option>वही</option><option>गणवेश</option><option>शूज</option><option>सॉक्स</option><option>बॅग</option><option>शिष्यवृत्ती</option></select>
+<input id="distDetails" placeholder="तपशील / Size / रक्कम"><input id="distDate" type="date"><button onclick="saveDistribution()">Save Distribution</button>
+</div><table id="distTable"></table></div></section>
+
+<section id="committees" class="page"><div class="card">
+<h2>शाळेच्या समित्या</h2><div class="form">
+<select id="comType"><option>SMC</option><option>PTA</option><option>बाल संसद</option><option>विद्यार्थी परिषद</option><option>ग्रंथालय समिती</option><option>शिस्त समिती</option><option>क्रीडा समिती</option></select>
+<input id="comName" placeholder="सदस्य नाव"><input id="comRole" placeholder="पद"><input id="comMobile" placeholder="मोबाईल"><textarea id="comMinutes" placeholder="बैठकीचे इतिवृत्त / ठराव"></textarea><button onclick="saveCommittee()">Save Committee</button>
+</div><table id="comTable"></table></div></section>
+
+<section id="fees" class="page"><div class="card">
+<h2>फी व्यवस्थापन</h2><div class="form">
+<select id="feeStudent"></select><input id="feeTotal" type="number" placeholder="एकूण फी"><input id="feePaid" type="number" placeholder="भरलेली फी"><input id="feeDate" type="date"><input id="feeRemark" placeholder="Remark"><button onclick="saveFee()">Save Fee</button><button onclick="sendFeeDueBoth()">थकबाकी WhatsApp + SMS</button>
+</div><table id="feeTable"></table></div></section>
+
+<section id="inventory" class="page"><div class="card">
+<h2>स्टॉक / Asset Management</h2><div class="form">
+<input id="assetName" placeholder="साहित्य नाव"><select id="assetType"><option>फर्निचर</option><option>संगणक</option><option>प्रोजेक्टर</option><option>क्रीडा साहित्य</option><option>प्रयोगशाळा</option><option>स्टेशनरी</option></select>
+<input id="assetQty" type="number" placeholder="प्रमाण"><input id="assetLocation" placeholder="ठिकाण"><button onclick="saveAsset()">Save Asset</button>
+</div><table id="assetTable"></table></div></section>
+
+<section id="whatsapp" class="page"><div class="card">
+<h2>WhatsApp API</h2><div class="form">
+<input id="waBase" value="https://whatsbot.tech/api"><input id="waToken" placeholder="WhatsApp API Token"><input id="waDevice" value="46120"><input id="waDefault" value="917507514475"><textarea id="waMsg">Test WhatsApp message</textarea><button onclick="saveWhatsApp()">Save</button><button onclick="sendWhatsAppTest()">Test</button>
 </div><textarea id="waUrl" readonly></textarea></div></section>
-<section id="smsapi" class="page"><div class="card"><h2>SMS API Settings</h2>
-<p class="note">SMS Gateway URL Template: <b>https://sms-provider.com/api?apikey={API_KEY}&sender={SENDER_ID}&mobile={MOBILE}&message={MESSAGE}</b></p>
-<div class="form"><input id="smsUrlTemplate" placeholder="SMS URL Template"><input id="smsApiKey" placeholder="SMS API Key"><input id="smsSender" placeholder="Sender ID उदा. SCHOOL"><input id="smsDefault" value="917507514475" maxlength="12"><textarea id="smsMsg">Test SMS from School ERP V18</textarea><button onclick="saveSmsApi()">Save SMS API</button><button onclick="sendSmsTest()">Generate/Send SMS Test</button></div><textarea id="smsGeneratedUrl" readonly></textarea></div></section>
-<section id="media" class="page"><div class="card"><h2>WhatsApp Media</h2><div class="form">
-<select id="mediaType"><option value="send_audio">Audio</option><option value="send_img">Image</option><option value="send_doc">PDF/Document</option><option value="send_video">Video</option></select><input id="mediaMobile" value="917507514475" maxlength="12"><input id="mediaUrl" placeholder="Public file URL"><textarea id="mediaCaption" placeholder="Caption / Audio title"></textarea><button onclick="generateMediaUrl()">Generate Media URL</button><button onclick="sendMedia()">Send Media</button></div><textarea id="mediaGeneratedUrl" readonly></textarea></div></section>
-<section id="reports" class="page"><div class="card"><h2>Reports</h2><div class="form"><select id="reportType"><option value="students">Students</option><option value="teachers">Teachers</option><option value="staff">Staff</option><option value="attendance">Attendance</option><option value="templates">Templates</option></select><button onclick="showReport()">Show Report</button><button onclick="downloadReport()">Excel Download</button><button onclick="window.print()">Print/PDF</button></div><div id="reportBox"></div></div></section>
-<section id="settings" class="page"><div class="card"><h2>General Settings / Backup</h2><div class="form"><input id="setSchool" placeholder="शाळेचे नाव"><input id="setAddress" placeholder="पत्ता"><input id="setYear" placeholder="शैक्षणिक वर्ष 2025 - 26"><button onclick="saveGeneral()">Save Settings</button><button onclick="backupData()">Backup JSON</button><input id="restoreFile" type="file" accept=".json"><button onclick="restoreData()">Restore JSON</button></div></div></section>
+
+<section id="smsapi" class="page"><div class="card">
+<h2>SMS API</h2><p class="note">Template: https://sms-provider.com/api?apikey={API_KEY}&sender={SENDER_ID}&mobile={MOBILE}&message={MESSAGE}</p><div class="form">
+<input id="smsUrlTemplate" placeholder="SMS URL Template"><input id="smsApiKey" placeholder="SMS API Key"><input id="smsSender" placeholder="Sender ID"><input id="smsDefault" value="917507514475"><textarea id="smsMsg">Test SMS</textarea><button onclick="saveSmsApi()">Save SMS API</button><button onclick="sendSmsTest()">Test SMS URL</button>
+</div><textarea id="smsGeneratedUrl" readonly></textarea></div></section>
+
+<section id="reports" class="page"><div class="card">
+<h2>Reports</h2><div class="form"><select id="reportType"><option value="students">Students</option><option value="teachers">Teachers</option><option value="attendance">Attendance</option><option value="results">Results</option><option value="books">Books</option><option value="issues">Book Issues</option><option value="distributions">Distributions</option><option value="committees">Committees</option><option value="fees">Fees</option><option value="assets">Assets</option></select><button onclick="showReport()">Show</button><button onclick="downloadReport()">Excel</button><button onclick="window.print()">Print/PDF</button></div><div id="reportBox"></div></div></section>
+
+<section id="settings" class="page"><div class="card">
+<h2>Settings / Backup</h2><div class="form"><input id="setSchool" placeholder="शाळेचे नाव"><input id="setAddress" placeholder="पत्ता"><input id="setYear" placeholder="शैक्षणिक वर्ष 2025 - 26"><button onclick="saveGeneral()">Save Settings</button><button onclick="backupData()">Backup JSON</button><input id="restoreFile" type="file"><button onclick="restoreData()">Restore JSON</button></div></div></section>
 </main><script src="app.js"></script></body></html>
