@@ -1,3 +1,3 @@
-School ERP V26 Ultimate Production Edition
-सर्व मेनू कायम ठेवण्यासाठी Permanent Menu Lock जोडले आहे.
-Commit Summary: School ERP V26 Ultimate Production Edition
+School ERP V27 Ultimate Production Stable
+सर्व 21 मेनू कायम आहेत. Health, Certificate, Result, Fees, Distribution, Homework fields वाढवले आहेत.
+Commit Summary: School ERP V27 Ultimate Production Stable
