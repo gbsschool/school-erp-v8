@@ -1,0 +1,19 @@
+
+.v34-main-header{position:relative;z-index:9999}
+.v34-letterhead{font-family:'Nirmala UI',Arial,sans-serif;text-align:center;line-height:1.35}
+.v34-main-header .v34-letterhead{background:linear-gradient(135deg,#063b5d,#08796f);color:#fff;padding:14px;border-bottom:4px solid #d78913}
+.v34-letterhead .trust{font-size:17px;font-weight:700}
+.v34-letterhead .managed{font-size:13px}
+.v34-letterhead .school{font-size:24px;font-weight:900}
+.v34-letterhead .addr,.v34-letterhead .sub{font-size:14px}
+.v34-cert{font-family:'Nirmala UI',Arial,sans-serif;background:#fff;color:#111;border:2px solid #111;padding:22px;margin:15px auto;max-width:980px}
+.v34-cert h2{text-align:center;text-decoration:underline;margin:18px 0}
+.v34-cert .cert-text{font-size:18px;line-height:1.9;text-align:justify;margin:20px 5px}
+.v34-table{width:100%;border-collapse:collapse;font-size:16px;margin-top:15px}
+.v34-table th,.v34-table td{border:1px solid #777;padding:8px;text-align:left}
+.v34-table th{width:36%;background:#f1f5f7}
+.sign-row{display:flex;justify-content:space-between;margin-top:60px;font-weight:700}
+@media print{
+  nav,.form,button,.hero,.v34-main-header{display:none!important}
+  .v34-cert{border:2px solid #111;box-shadow:none;margin:0;max-width:100%}
+}
