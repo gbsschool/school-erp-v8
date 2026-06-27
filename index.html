@@ -2,14 +2,14 @@
 <html lang="mr">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>School ERP V22 Diamond Enterprise</title>
+<title>School ERP V23 Stable Live</title>
 <link rel="stylesheet" href="style.css"><link rel="manifest" href="manifest.json">
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 </head>
 <body>
 <div id="loginScreen" class="login">
   <div class="loginBox">
-    <h2>School ERP V22 Diamond</h2>
+    <h2>School ERP V23 Stable</h2>
     <input id="loginUser" placeholder="User ID" value="admin">
     <input id="loginPass" type="password" placeholder="Password" value="admin123">
     <button onclick="login()">Login</button>
@@ -51,11 +51,11 @@
 
 <main>
 <section id="dashboard" class="page show"><div class="card">
-<h2>School ERP V22 Diamond Enterprise Dashboard</h2>
+<h2>School ERP V23 Stable Live Dashboard</h2>
 <div class="tiles">
 <div><b id="studentCount">0</b><span>विद्यार्थी</span></div><div><b id="teacherCount">0</b><span>शिक्षक</span></div><div><b id="attToday">0</b><span>आज उपस्थित</span></div><div><b id="feeDue">0</b><span>फी थकबाकी</span></div><div><b id="bookCount">0</b><span>पुस्तके</span></div><div><b id="noticeCount">0</b><span>सूचना</span></div>
 </div>
-<p class="note">V22 Diamond Live: Report Card + Rank, LC/TC/Bonafide/ID/Hall Ticket, Library Return/Fine, Fee Receipt, Photo/Docs, AI Notice, WhatsApp/SMS, Backup/Restore.</p>
+<div id="dataSafetyBox" class="statusReady">डेटा सुरक्षित ठेवण्यासाठी रोज Backup JSON डाउनलोड करा. Browser cache clear केल्यास local data जाऊ शकतो; Backup/Restore उपलब्ध आहे.</div><p class="note">V23 Stable Live: Report Card + Rank, LC/TC/Bonafide/ID/Hall Ticket, Library Return/Fine, Fee Receipt, Photo/Docs, AI Notice, WhatsApp/SMS, Backup/Restore.</p>
 </div></section>
 
 <section id="students" class="page"><div class="card"><h2>विद्यार्थी संपूर्ण प्रोफाइल</h2><div class="form">
@@ -150,7 +150,30 @@
 
 <section id="audit" class="page"><div class="card"><h2>Audit Log / Activity History</h2><p class="note">महत्त्वाच्या Save actions ची नोंद येथे दिसेल.</p><table id="auditTable"></table></div></section>
 
-<section id="settings" class="page"><div class="card"><h2>Settings</h2><div class="form"><input id="setSchool" placeholder="शाळेचे नाव"><input id="setAddress" placeholder="पत्ता"><input id="setYear" placeholder="शैक्षणिक वर्ष 2025 - 26"><input id="adminMobile" placeholder="Admin WhatsApp 917507514475"><button onclick="saveGeneral()">Save Settings</button><button onclick="logout()">Logout</button></div></div></section>
+
+<section id="settings" class="page"><div class="card">
+<h2>Settings / School Master</h2>
+<div class="form">
+<input id="setSchool" placeholder="शाळेचे नाव">
+<input id="setAddress" placeholder="शाळेचा पत्ता">
+<input id="setYear" placeholder="शैक्षणिक वर्ष 2025 - 26">
+<input id="setUdise" placeholder="UDISE Code">
+<input id="setAffiliation" placeholder="मान्यता / Affiliation No.">
+<input id="setPrincipal" placeholder="मुख्याध्यापक नाव">
+<input id="setChairman" placeholder="अध्यक्ष नाव">
+<input id="setSecretary" placeholder="सचिव नाव">
+<input id="setAdminMobile" placeholder="Admin WhatsApp 917507514475">
+<input id="setLogoUrl" placeholder="Logo URL किंवा assets/school-logo.jpg">
+<button onclick="saveMasterSettings()">Save School Settings</button>
+<button onclick="applyMasterSettings()">Apply Settings</button>
+<button onclick="backupData()">Backup JSON</button>
+<input id="restoreFile" type="file">
+<button onclick="restoreData()">Restore JSON</button>
+<button onclick="logout()">Logout</button>
+</div>
+<p class="note">Live झाल्यानंतर माहिती delete होऊ नये म्हणून Backup JSON डाउनलोड करून ठेवा. पुढील टप्प्यात Firebase Cloud Sync जोडल्यावर डेटा कायम cloud मध्ये राहील.</p>
+</div></section>
+
 </main>
 </div>
 <script src="app.js"></script></body></html>

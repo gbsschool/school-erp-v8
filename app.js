@@ -84,3 +84,76 @@ const oldRenderV22 = typeof render==="function" ? render : null;
 if(oldRenderV22){
   render=function(){oldRenderV22(); renderTransport(); renderHealth(); renderMDM(); renderAudit(); try{["healthStudent"].forEach(i=>{if($(i))$(i).innerHTML=(D.students||get("students")).map(s=>`<option value="${s.id}">${s.name} - ${s.className}</option>`).join("")});}catch(e){}}
 }
+
+
+/* V23 Stable Live: no auto-delete, backup, complete settings/certificates */
+window.SCHOOL_ERP_VERSION="V23 Stable Live";
+function v23GetObj(k){try{return JSON.parse(localStorage.getItem("v22_"+k)||localStorage.getItem("v23_"+k)||"{}")}catch(e){return {}}}
+function v23SetObj(k,v){localStorage.setItem("v22_"+k,JSON.stringify(v));localStorage.setItem("v23_"+k,JSON.stringify(v))}
+function v23GetArr(k){try{return JSON.parse(localStorage.getItem("v22_"+k)||localStorage.getItem("v23_"+k)||"[]")}catch(e){return []}}
+function v23SetArr(k,v){localStorage.setItem("v22_"+k,JSON.stringify(v));localStorage.setItem("v23_"+k,JSON.stringify(v))}
+function saveMasterSettings(){
+  const g={
+    school:(window.setSchool&&setSchool.value)||"",
+    address:(window.setAddress&&setAddress.value)||"",
+    year:(window.setYear&&setYear.value)||"शैक्षणिक वर्ष 2025 - 26",
+    udise:(window.setUdise&&setUdise.value)||"",
+    affiliation:(window.setAffiliation&&setAffiliation.value)||"",
+    principal:(window.setPrincipal&&setPrincipal.value)||"",
+    chairman:(window.setChairman&&setChairman.value)||"",
+    secretary:(window.setSecretary&&setSecretary.value)||"",
+    adminMobile:(window.setAdminMobile&&setAdminMobile.value)||"917507514475",
+    logoUrl:(window.setLogoUrl&&setLogoUrl.value)||"assets/school-logo.jpg"
+  };
+  v23SetObj("general",g); applyMasterSettings(); alert("School Settings Save झाले");
+}
+function applyMasterSettings(){
+  const g=v23GetObj("general");
+  if(document.getElementById("schoolTitle") && g.school) schoolTitle.innerText=g.school;
+  if(document.getElementById("schoolAddressTitle") && g.address) schoolAddressTitle.innerText=g.address;
+  if(document.getElementById("academicYear") && g.year) academicYear.innerText=g.year;
+  if(window.setSchool) setSchool.value=g.school||"";
+  if(window.setAddress) setAddress.value=g.address||"";
+  if(window.setYear) setYear.value=g.year||"शैक्षणिक वर्ष 2025 - 26";
+  if(window.setUdise) setUdise.value=g.udise||"";
+  if(window.setAffiliation) setAffiliation.value=g.affiliation||"";
+  if(window.setPrincipal) setPrincipal.value=g.principal||"";
+  if(window.setChairman) setChairman.value=g.chairman||"";
+  if(window.setSecretary) setSecretary.value=g.secretary||"";
+  if(window.setAdminMobile) setAdminMobile.value=g.adminMobile||"917507514475";
+  if(window.setLogoUrl) setLogoUrl.value=g.logoUrl||"assets/school-logo.jpg";
+  const logo=document.querySelector(".logoText");
+  if(logo){
+    logo.innerHTML="";
+    logo.style.background="#fff url('"+(g.logoUrl||"assets/school-logo.jpg")+"?v="+Date.now()+"') center/cover no-repeat";
+    logo.style.color="transparent";
+  }
+}
+function getCertStudent(){try{return (D.students||v23GetArr("students")).find(x=>x.id==certStudent.value)}catch(e){return null}}
+function schoolName(){return (document.getElementById("schoolTitle")||{}).innerText||"शाळेचे नाव"}
+function schoolAddr(){return (document.getElementById("schoolAddressTitle")||{}).innerText||""}
+function schoolYear(){return (document.getElementById("academicYear")||{}).innerText||"शैक्षणिक वर्ष 2025 - 26"}
+function makeCertificate(){
+  const s=getCertStudent(); if(!s){alert("विद्यार्थी निवडा");return}
+  const g=v23GetObj("general"), type=certType.value, reason=certReason.value||"-";
+  let sign=`<p style="display:flex;justify-content:space-between;margin-top:60px"><span>लिपिक सही</span><span>वर्गशिक्षक सही</span><span>${g.principal||"मुख्याध्यापक"} सही व शिक्का</span></p>`;
+  let commonRows=`<tr><th>विद्यार्थी नाव</th><td>${s.name||""}</td></tr><tr><th>आईचे नाव</th><td>${s.mother||"-"}</td></tr><tr><th>वडिलांचे नाव</th><td>${s.father||"-"}</td></tr><tr><th>जन्म तारीख</th><td>${s.dob||"-"}</td></tr><tr><th>वर्ग / हजेरी क्र.</th><td>${s.className||""} / ${s.roll||""}</td></tr><tr><th>आधार</th><td>${s.aadhar||"-"}</td></tr><tr><th>PEN / APAAR</th><td>${s.pen||"-"}</td></tr><tr><th>UDISE / Student ID</th><td>${s.udise||"-"}</td></tr><tr><th>जात / प्रवर्ग</th><td>${s.caste||"-"}</td></tr><tr><th>पत्ता</th><td>${s.address||"-"}</td></tr><tr><th>उद्देश</th><td>${reason}</td></tr>`;
+  if(type==="ID Card"){
+    certBox.innerHTML=`<div class="printbox" style="max-width:430px;margin:auto"><h3>${schoolName()}</h3><h2>STUDENT ID CARD</h2><table class="certificate-table" style="width:100%">${commonRows}</table><p style="text-align:right;margin-top:35px">${g.principal||"मुख्याध्यापक"} सही</p></div>`;
+  } else if(type==="Hall Ticket"){
+    certBox.innerHTML=`<div class="printbox"><h2>${schoolName()}</h2><h3>${schoolAddr()}</h3><div class="certificate-title">HALL TICKET</div><table class="certificate-table" style="width:100%">${commonRows}</table><p>विद्यार्थ्याने परीक्षेसाठी वेळेवर उपस्थित राहावे व शाळेचे सर्व नियम पाळावेत.</p>${sign}</div>`;
+  } else {
+    certBox.innerHTML=`<div class="printbox"><h2>${schoolName()}</h2><h3>${schoolAddr()}</h3><div class="certificate-title">${type}</div><p>प्रमाणित करण्यात येते की खालील माहिती शाळेच्या नोंदीप्रमाणे बरोबर आहे.</p><table class="certificate-table" style="width:100%">${commonRows}<tr><th>शैक्षणिक वर्ष</th><td>${schoolYear()}</td></tr><tr><th>UDISE Code</th><td>${g.udise||"-"}</td></tr><tr><th>मान्यता क्रमांक</th><td>${g.affiliation||"-"}</td></tr></table>${sign}</div>`;
+  }
+}
+const oldLoadSettingsV23 = window.loadSettings;
+window.loadSettings=function(){try{if(oldLoadSettingsV23)oldLoadSettingsV23()}catch(e){} applyMasterSettings();}
+const oldBackupDataV23=window.backupData;
+window.backupData=function(){
+  const keys=["students","documents","teachers","attendance","results","books","issues","distributions","committees","fees","notices","transport","health","mdm","audit"];
+  const data={version:"V23 Stable Live",date:new Date().toISOString(),D:{},general:v23GetObj("general"),wa:v23GetObj("wa"),sms:v23GetObj("sms"),firebase:v23GetObj("firebase")};
+  keys.forEach(k=>data.D[k]=v23GetArr(k));
+  const b=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="school_erp_v23_backup_"+new Date().toISOString().slice(0,10)+".json";a.click();
+}
+window.addEventListener("DOMContentLoaded",()=>{setTimeout(applyMasterSettings,400)});
