@@ -1,1 +1,1 @@
-export default function handler(req,res){res.setHeader("Access-Control-Allow-Origin","*");return res.status(200).json({status:true,message:"School ERP V13 Logo Settings API working"});}
+export default function handler(req,res){res.setHeader("Access-Control-Allow-Origin","*");return res.status(200).json({status:true,message:"School ERP V14 Working Buttons API"});}
