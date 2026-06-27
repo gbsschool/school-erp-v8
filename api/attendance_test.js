@@ -1,0 +1,1 @@
+export default function handler(req,res){res.setHeader('Access-Control-Allow-Origin','*');res.status(200).json({status:true,message:'P/A Attendance API test endpoint ready',query:req.query})}
