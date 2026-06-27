@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>School ERP V11 Professional</title>
+<title>School ERP V12 Enterprise AutoPilot</title>
 <link rel="manifest" href="manifest.json"/>
 <link rel="stylesheet" href="style.css"/>
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
@@ -14,47 +14,146 @@
 <body>
 <header class="hero">
   <div class="shade">
-    <div class="logo" id="schoolLogo">शाळा</div>
-    <h1>स्व. गुरुबक्षसिंग साबरवाल माध्यमिक व उच्च माध्यमिक विद्यालय</h1>
-    <h2>नायगाव (भिकापूर)</h2>
-    <p>वेबसाईट + मोबाईल अ‍ॅप स्वरूपातील AutoPilot School ERP</p>
+    <div class="logo" id="logoPreview">शाळा</div>
+    <h1 id="schoolNameTitle">स्व. गुरुबक्षसिंग साबरवाल माध्यमिक व उच्च माध्यमिक विद्यालय</h1>
+    <h2 id="schoolAddressTitle">नायगाव (भिकापूर)</h2>
+    <p>Website + Mobile App AutoPilot ERP</p>
   </div>
 </header>
-<nav id="nav">
-<button onclick="page('dash')" class="on">मुख्यपृष्ठ</button>
-<button onclick="page('students')">विद्यार्थी</button>
-<button onclick="page('teachers')">शिक्षक</button>
-<button onclick="page('attS')">विद्यार्थी उपस्थिती</button>
-<button onclick="page('attT')">शिक्षक उपस्थिती</button>
-<button onclick="page('hw')">गृहपाठ/वर्गकार्य</button>
-<button onclick="page('answer')">उत्तरपत्रिका फोटो</button>
-<button onclick="page('notice')">सूचना</button>
-<button onclick="page('excel')">Excel</button>
-<button onclick="page('settings')">Settings</button>
-<button onclick="page('reports')">Reports</button>
+
+<nav>
+<button class="active" onclick="show('dashboard',this)">मुख्यपृष्ठ</button>
+<button onclick="show('students',this)">विद्यार्थी</button>
+<button onclick="show('teachers',this)">शिक्षक</button>
+<button onclick="show('studentAtt',this)">विद्यार्थी उपस्थिती</button>
+<button onclick="show('teacherAtt',this)">शिक्षक उपस्थिती</button>
+<button onclick="show('homework',this)">गृहपाठ/वर्गकार्य</button>
+<button onclick="show('answerPhotos',this)">उत्तरपत्रिका फोटो</button>
+<button onclick="show('notices',this)">सूचना</button>
+<button onclick="show('excel',this)">Excel</button>
+<button onclick="show('settings',this)">Settings</button>
+<button onclick="show('reports',this)">Reports</button>
 </nav>
+
 <main>
-<section id="dash" class="pg show"><div class="card"><h2>AutoPilot Dashboard</h2><div class="tiles"><b>8वी</b><b>9वी</b><b>10वी</b><b>Principal / President / Secretary Summary</b></div><p class="info">पालकांना विद्यार्थी संबंधित मेसेज जातील. Summary फक्त मुख्याध्यापक/अध्यक्ष/सचिव यांना जाईल.</p></div></section>
+<section id="dashboard" class="page show">
+ <div class="card">
+  <h2>AutoPilot Dashboard</h2>
+  <div class="tiles">
+    <div><b id="countStudents">0</b><span>विद्यार्थी</span></div>
+    <div><b id="countTeachers">0</b><span>शिक्षक</span></div>
+    <div><b>Auto</b><span>Parent Message</span></div>
+    <div><b>PWA</b><span>Mobile App Ready</span></div>
+  </div>
+  <p class="note">पालकांना विद्यार्थ्याशी संबंधित मेसेज जातील. Summary फक्त मुख्याध्यापक, अध्यक्ष आणि सचिव यांना जाईल.</p>
+ </div>
+</section>
 
-<section id="students" class="pg"><div class="card"><h2>विद्यार्थी Add/Edit/Delete</h2><div class="form"><input id="sName" placeholder="विद्यार्थी नाव"><select id="sClass"><option>8वी</option><option>9वी</option><option>10वी</option></select><input id="sMob" placeholder="पालक मोबाईल" maxlength="10"><input id="sDob" type="date"><button onclick="addStudent()">Save</button></div><table><tbody id="studentRows"></tbody></table></div></section>
+<section id="students" class="page"><div class="card">
+<h2>विद्यार्थी व्यवस्थापन</h2>
+<div class="form">
+<input id="sId" type="hidden"><input id="sName" placeholder="विद्यार्थी नाव">
+<select id="sClass"><option>8वी</option><option>9वी</option><option>10वी</option></select>
+<input id="sParent" placeholder="पालक मोबाईल" maxlength="10"><input id="sDob" type="date">
+<button onclick="saveStudent()">Save Student</button><button onclick="clearStudent()">Clear</button>
+</div>
+<table id="studentTable"></table>
+</div></section>
 
-<section id="teachers" class="pg"><div class="card"><h2>शिक्षक Add/Edit/Delete</h2><div class="form"><input id="tName" placeholder="शिक्षक नाव"><input id="tMob" placeholder="मोबाईल" maxlength="10"><input id="tSub" placeholder="विषय शिक्षक"><select id="tClass"><option>8वी</option><option>9वी</option><option>10वी</option><option>सर्व</option></select><button onclick="addTeacher()">Save</button></div><table><tbody id="teacherRows"></tbody></table></div></section>
+<section id="teachers" class="page"><div class="card">
+<h2>शिक्षक व्यवस्थापन</h2>
+<div class="form">
+<input id="tId" type="hidden"><input id="tName" placeholder="शिक्षक नाव">
+<input id="tMobile" placeholder="मोबाईल" maxlength="10"><input id="tSubject" placeholder="विषय शिक्षक">
+<select id="tClass"><option>8वी</option><option>9वी</option><option>10वी</option><option>सर्व</option></select>
+<input id="tUser" placeholder="User ID"><input id="tPass" placeholder="Password">
+<button onclick="saveTeacher()">Save Teacher</button><button onclick="clearTeacher()">Clear</button>
+</div>
+<table id="teacherTable"></table>
+</div></section>
 
-<section id="attS" class="pg"><div class="card"><h2>प्रत्येक विद्यार्थ्याची उपस्थिती</h2><div class="form"><input id="asDate" type="date"><select id="asClass"><option>8वी</option><option>9वी</option><option>10वी</option></select><button onclick="loadStudentAttendance()">यादी दाखवा</button><button onclick="saveStudentAttendance()">Save + Auto Message</button></div><div id="attStudentBox"></div></div></section>
+<section id="studentAtt" class="page"><div class="card">
+<h2>विद्यार्थी उपस्थिती — प्रत्येक विद्यार्थ्यासाठी Present / Absent</h2>
+<div class="form"><input id="saDate" type="date"><select id="saClass"><option>8वी</option><option>9वी</option><option>10वी</option></select><button onclick="loadStudentAttendance()">यादी दाखवा</button><button onclick="saveStudentAttendance()">Save + Auto Message</button></div>
+<div id="studentAttList"></div>
+</div></section>
 
-<section id="attT" class="pg"><div class="card"><h2>शिक्षक उपस्थिती</h2><div class="form"><input id="atDate" type="date"><button onclick="loadTeacherAttendance()">यादी दाखवा</button><button onclick="saveTeacherAttendance()">Save + Summary</button></div><div id="attTeacherBox"></div></div></section>
+<section id="teacherAtt" class="page"><div class="card">
+<h2>शिक्षक उपस्थिती</h2>
+<div class="form"><input id="taDate" type="date"><button onclick="loadTeacherAttendance()">यादी दाखवा</button><button onclick="saveTeacherAttendance()">Save + Summary</button></div>
+<div id="teacherAttList"></div>
+</div></section>
 
-<section id="hw" class="pg"><div class="card"><h2>गृहपाठ / वर्गकार्य + फोटो/लिंक</h2><div class="form"><input id="hwDate" type="date"><select id="hwClass"><option>8वी</option><option>9वी</option><option>10वी</option></select><input id="hwSub" placeholder="विषय"><textarea id="cw" placeholder="वर्गकार्य"></textarea><textarea id="hwt" placeholder="गृहपाठ"></textarea><input id="hwLink" placeholder="YouTube/Google Drive/Article Link"><input id="hwPhoto" type="file" accept="image/*" capture="environment"><button onclick="loadHwStudents()">यादी</button><button onclick="saveHomework()">Save + पालकांना मेसेज</button></div><div id="hwBox"></div></div></section>
+<section id="homework" class="page"><div class="card">
+<h2>गृहपाठ / वर्गकार्य / लिंक / फोटो</h2>
+<div class="form">
+<input id="hwDate" type="date"><select id="hwClass"><option>8वी</option><option>9वी</option><option>10वी</option></select>
+<input id="hwSubject" placeholder="विषय"><textarea id="classWork" placeholder="वर्गकार्य"></textarea>
+<textarea id="homeWork" placeholder="गृहपाठ"></textarea><input id="hwLink" placeholder="Link / Article / Video URL">
+<input id="hwPhoto" type="file" accept="image/*" capture="environment">
+<button onclick="loadHomeworkStudents()">विद्यार्थी यादी</button><button onclick="saveHomework()">Save + Parent Messages</button>
+</div>
+<p class="note">गृहपाठ न केलेल्या विद्यार्थ्यांना टिक करा. त्या पालकांना स्वतंत्र मेसेज जाईल.</p>
+<div id="homeworkList"></div>
+</div></section>
 
-<section id="answer" class="pg"><div class="card"><h2>उत्तरपत्रिका / नोटबुक फोटो</h2><p class="info">मोबाईलवर कॅमेरा वापरून फोटो घेता येईल. मोठे फोटो सेव्ह/शेअर करण्यासाठी Firebase Storage Blaze plan लागतो.</p><div class="form"><select id="ansClass"><option>8वी</option><option>9वी</option><option>10वी</option></select><input id="ansStudent" placeholder="विद्यार्थी नाव"><input type="file" id="ansPhoto" accept="image/*" capture="environment"><textarea id="ansNote" placeholder="नोंद / तपासणी remark"></textarea><button onclick="saveAnswerPhoto()">Record Save</button></div><div id="answerPreview"></div></div></section>
+<section id="answerPhotos" class="page"><div class="card">
+<h2>उत्तरपत्रिका / वही / नोटबुक फोटो</h2>
+<p class="note">कॅमेरा input उपलब्ध आहे. प्रत्यक्ष फोटो Firebase Storage मध्ये सेव्ह करण्यासाठी Blaze Plan आवश्यक आहे. सध्या फोटोचे नाव/नोंद Firestore मध्ये सेव्ह होते.</p>
+<div class="form">
+<select id="apClass"><option>8वी</option><option>9वी</option><option>10वी</option></select>
+<input id="apStudent" placeholder="विद्यार्थी नाव">
+<input id="apSubject" placeholder="विषय">
+<input id="apFile" type="file" accept="image/*" capture="environment">
+<textarea id="apRemark" placeholder="Remark"></textarea>
+<button onclick="saveAnswerPhoto()">Record Save</button>
+</div>
+<table id="answerTable"></table>
+</div></section>
 
-<section id="notice" class="pg"><div class="card"><h2>सूचना व Templates</h2><div class="form"><select id="noticeType"><option>शैक्षणिक कार्यक्रम</option><option>क्रीडा कार्यक्रम</option><option>सुट्टी सूचना</option><option>परीक्षा सूचना</option><option>फी सूचना</option><option>सहल सूचना</option><option>इतर सूचना</option></select><textarea id="noticeMsg" placeholder="सूचना मजकूर"></textarea><button onclick="fillTemplate()">Template भरा</button><button onclick="sendNotice()">सर्व पालकांना पाठवा</button></div></div></section>
+<section id="notices" class="page"><div class="card">
+<h2>सूचना व Template</h2>
+<div class="form">
+<select id="noticeType"><option>शैक्षणिक कार्यक्रमाची सूचना</option><option>क्रीडा कार्यक्रमाची सूचना</option><option>सुट्टीची सूचना</option><option>परीक्षा संदर्भातील सूचना</option><option>फी संदर्भातील सूचना</option><option>सहली संदर्भातील सूचना</option><option>इतर सूचना</option></select>
+<textarea id="noticeText" placeholder="सूचना मजकूर"></textarea>
+<select id="noticeLang"><option value="hi">Hindi Audio Text</option><option value="mr">Marathi Audio Text</option></select>
+<button onclick="templateNotice()">Template तयार करा</button><button onclick="sendNotice()">सर्व पालकांना पाठवा</button>
+</div>
+</div></section>
 
-<section id="excel" class="pg"><div class="card"><h2>Excel Upload / Report Download</h2><div class="form"><select id="exType"><option value="students">Students</option><option value="teachers">Teachers</option></select><input type="file" id="exFile" accept=".xlsx,.xls,.csv"><button onclick="uploadExcel()">Upload</button><button onclick="downloadExcel('students')">Students Report</button><button onclick="downloadExcel('teachers')">Teachers Report</button><button onclick="downloadAttendance()">Attendance Report</button></div></div></section>
+<section id="excel" class="page"><div class="card">
+<h2>Excel Upload / Download</h2>
+<p><b>Students columns:</b> name, className, parentMobile, dob</p>
+<p><b>Teachers columns:</b> name, mobile, subject, className, userId, password</p>
+<div class="form">
+<select id="excelType"><option value="students">Students Upload</option><option value="teachers">Teachers Upload</option></select>
+<input type="file" id="excelFile" accept=".xlsx,.xls,.csv">
+<button onclick="uploadExcel()">Upload Excel</button>
+<button onclick="downloadStudents()">Students Report</button>
+<button onclick="downloadTeachers()">Teachers Report</button>
+<button onclick="downloadAttendance()">Attendance Report</button>
+</div>
+</div></section>
 
-<section id="settings" class="pg"><div class="card"><h2>Settings</h2><div class="form"><input id="proxyUrl" placeholder="https://your-vercel-url.vercel.app/api"><input id="apiToken" placeholder="WhatsBot API Token"><input id="deviceId" placeholder="Device ID"><input id="principalMobile" placeholder="मुख्याध्यापक मोबाईल" maxlength="10"><input id="presidentMobile" placeholder="अध्यक्ष मोबाईल" maxlength="10"><input id="secretaryMobile" placeholder="सचिव मोबाईल" maxlength="10"><select id="audioLang"><option value="hi-IN">Hindi Audio</option><option value="mr-IN">Marathi Audio</option></select><button onclick="saveSettings()">Save</button><button onclick="testMsg()">Test</button></div></div></section>
+<section id="settings" class="page"><div class="card">
+<h2>Settings</h2>
+<div class="form">
+<input id="schoolName" placeholder="शाळेचे नाव">
+<input id="schoolAddress" placeholder="पत्ता">
+<input id="proxyUrl" placeholder="https://your-vercel-url.vercel.app/api">
+<input id="apiToken" placeholder="WhatsBot API Token">
+<input id="deviceId" placeholder="Device ID">
+<input id="principalMobile" placeholder="मुख्याध्यापक मोबाईल" maxlength="10">
+<input id="presidentMobile" placeholder="अध्यक्ष मोबाईल" maxlength="10">
+<input id="secretaryMobile" placeholder="सचिव मोबाईल" maxlength="10">
+<input id="logoText" placeholder="Logo Text उदा. GBS">
+<button onclick="saveSettings()">Settings Save</button><button onclick="testMessage()">Test WhatsApp</button>
+</div>
+</div></section>
 
-<section id="reports" class="pg"><div class="card"><h2>Reports</h2><button onclick="loadReports()">Refresh</button><div id="reportBox"></div></div></section>
+<section id="reports" class="page"><div class="card">
+<h2>Reports</h2><button onclick="loadReports()">Refresh</button><button onclick="sendDailySummary()">Daily Summary Send</button><div id="reportBox"></div>
+</div></section>
 </main>
 <script src="firebase-config.js"></script>
 <script src="app.js"></script>

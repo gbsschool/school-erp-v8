@@ -1,14 +1,17 @@
-School ERP V11 Professional PWA
+School ERP V12 Enterprise AutoPilot
 
-Features:
-- Website + mobile installable PWA.
-- Student master, teacher master.
-- Student attendance with Present/Absent/Half Day per student.
-- Teacher attendance with Present/Absent/Leave per teacher.
-- Homework/Classwork, link and photo input.
-- Answer sheet photo record. For real image upload/share, Firebase Storage Blaze plan is required.
-- Notice templates: academic, sports, holiday, exam, fee, tour, other.
-- Excel upload and reports download.
-- WhatsApp/SMS proxy.
+पूर्ण सुविधांचा समावेश:
+- Website + installable Mobile PWA.
+- Student Add/Edit/Delete.
+- Teacher Add/Edit/Delete.
+- Student Present/Absent/Half Day.
+- Teacher Present/Absent/Leave.
+- Homework/Classwork with Link and Camera Photo input.
+- Answer sheet photo record.
+- Notice templates: Academic, Sports, Holiday, Exam, Fee, Tour, Other.
+- Hindi/Marathi notice text.
+- Excel Upload and Download Reports.
+- Parent WhatsApp/SMS messages.
 - Summary only to Principal, President, Secretary.
-- Parent messages for relevant student communication.
+- School Logo text, name and address settings.
+Note: Actual image upload to Firebase Storage requires Blaze plan.
