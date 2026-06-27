@@ -11,7 +11,14 @@ function loadSampleStudents(){D.students=(window.SEED_STUDENTS||[]).map(s=>({...
 function saveStudent(){D.students.push({id:uid(),admissionNo:sAdmission.value,name:sName.value,mother:sMother.value,className:sClass.value,roll:sRoll.value,religion:sReligion.value,caste:sCaste.value,dob:sDob.value,admissionDate:sAdmissionDate.value,parent:sParent.value});set("students",D.students);renderAll()}
 function renderStudents(){if(!window.studentTable)return;studentTable.innerHTML="<tr><th>रोल</th><th>प्रवेश</th><th>नाव</th><th>आई</th><th>धर्म</th><th>जात</th><th>DOB</th><th>Mobile</th></tr>"+D.students.map(s=>`<tr><td>${s.roll||""}</td><td>${s.admissionNo||""}</td><td>${s.name||""}</td><td>${s.mother||""}</td><td>${s.religion||""}</td><td>${s.caste||""}</td><td>${s.dob||""}</td><td>${s.parent||""}</td></tr>`).join("")}
 function loadAttendance(){attList.innerHTML=D.students.filter(s=>s.className==attClass.value).map(s=>`<div class='row' data-id='${s.id}' data-status='P'><b>${s.roll}</b><b>${s.name}<br><small>${s.mother||""}</small></b><button class='ok' onclick="mark(this,'P')">P</button><button class='bad' onclick="mark(this,'A')">A</button><button class='half' onclick="mark(this,'H')">H</button><button class='late' onclick="mark(this,'L')">L</button><span class='st'>P</span></div>`).join("")}
-function mark(btn,st){let r=btn.closest(".row");r.dataset.status=st;r.querySelector(".st").innerText=st}
+function mark(btn,st){
+  let r=btn.closest(".row");
+  r.dataset.status=st;
+  r.querySelector(".st").innerText=st;
+  document.querySelectorAll(".row button").forEach(b=>b.style.outline="none");
+  btn.style.outline="3px solid #111";
+  sendAttendanceWhatsApp(r.dataset.id, st);
+}
 function saveAttendance(){let date=attDate.value;D.attendance=D.attendance.filter(a=>!(a.date==date&&a.className==attClass.value));document.querySelectorAll("#attList .row").forEach(r=>{let s=studentBy(r.dataset.id);D.attendance.push({date,className:attClass.value,roll:s.roll,name:s.name,mother:s.mother,mobile:s.parent,status:r.dataset.status})});set("attendance",D.attendance);renderAll();alert("Attendance Save झाली")}
 function generatePAApi(){let w=getO("wa"), base=w.url||"https://whatsbot.tech/api";msgUrls.value=D.attendance.filter(a=>a.date==attDate.value&&a.className==attClass.value).map(a=>`${base}/send_sms?api_token=${encodeURIComponent(w.token||"")}&mobile=${encodeURIComponent(a.mobile||"917507514475")}&message=${encodeURIComponent(a.name+" आज उपस्थिती: "+a.status)}&device_id=${encodeURIComponent(w.device||"")}`).join("\\n")}
 function renderAttendanceTable(){if(!window.attendanceTable)return;attendanceTable.innerHTML="<tr><th>Date</th><th>Class</th><th>Roll</th><th>Name</th><th>Status</th></tr>"+D.attendance.slice(-100).map(a=>`<tr><td>${a.date}</td><td>${a.className}</td><td>${a.roll}</td><td>${a.name}</td><td>${a.status}</td></tr>`).join("")}
@@ -27,7 +34,7 @@ function saveHealth(){let s=studentBy(healthStudent.value);D.health.push({studen
 function renderHealth(){if(!window.healthTable)return;healthTable.innerHTML="<tr><th>Student</th><th>Height</th><th>Weight</th><th>Blood/HB</th><th>Remark</th></tr>"+D.health.map(h=>`<tr><td>${h.student}</td><td>${h.height}</td><td>${h.weight}</td><td>${h.blood}</td><td>${h.remark}</td></tr>`).join("")}
 function saveDist(){let s=studentBy(distStudent.value);D.distribution.push({student:s.name,item:distItem.value,qty:distQty.value,details:distDetails.value});set("distribution",D.distribution);renderDist()}
 function renderDist(){if(!window.distTable)return;distTable.innerHTML="<tr><th>Student</th><th>Item</th><th>Qty</th><th>Details</th></tr>"+D.distribution.map(d=>`<tr><td>${d.student}</td><td>${d.item}</td><td>${d.qty}</td><td>${d.details}</td></tr>`).join("")}
-function saveWA(){setO("wa",{url:waUrl.value,token:waToken.value,device:waDevice.value,mobile:waMobile.value});alert("API Save झाला")}
+function saveWA(){setO("wa",{url:waUrl.value,token:waToken.value,device:waDevice.value,mobile:waMobile.value});alert("API Save झाला. आता P/A/H/L क्लिक केल्यावर message send test होईल.")}
 function testWA(){let w=getO("wa");waOut.value=`${waUrl.value||w.url}/send_sms?api_token=${encodeURIComponent(waToken.value||w.token||"")}&mobile=${encodeURIComponent(waMobile.value||w.mobile||"917507514475")}&message=${encodeURIComponent(waMessage.value||"ERP Test")}&device_id=${encodeURIComponent(waDevice.value||w.device||"")}`}
 function showReport(){let rows=D[reportType.value]||[];reportBox.innerHTML="<table><tr>"+(rows[0]?Object.keys(rows[0]).map(h=>`<th>${h}</th>`).join(""):"")+"</tr>"+rows.map(r=>"<tr>"+Object.values(r).map(v=>`<td>${v}</td>`).join("")+"</tr>").join("")+"</table>"}
 function downloadReport(){let rows=D[reportType.value]||[];let ws=XLSX.utils.json_to_sheet(rows);let wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,"Report");XLSX.writeFile(wb,reportType.value+".xlsx")}
