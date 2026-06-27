@@ -2,14 +2,14 @@
 <html lang="mr">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>School ERP V20 Ultimate Enterprise</title>
+<title>School ERP V21 Platinum Enterprise</title>
 <link rel="stylesheet" href="style.css"><link rel="manifest" href="manifest.json">
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 </head>
 <body>
 <div id="loginScreen" class="login">
   <div class="loginBox">
-    <h2>School ERP V20 Login</h2>
+    <h2>School ERP V21 Platinum</h2>
     <input id="loginUser" placeholder="User ID" value="admin">
     <input id="loginPass" type="password" placeholder="Password" value="admin123">
     <button onclick="login()">Login</button>
@@ -19,7 +19,7 @@
 
 <div id="appRoot" style="display:none">
 <header class="hero"><div class="shade">
-<div class="logoText" id="logoBox">शाळा</div>
+<div class="logoText">शाळा</div>
 <h1 id="schoolTitle">स्व. गुरुबक्षसिंग साबरवाल माध्यमिक व उच्च माध्यमिक विद्यालय</h1>
 <h2 id="schoolAddressTitle">नायगाव (भिकापूर)</h2>
 <p id="academicYear">शैक्षणिक वर्ष 2025 - 26</p>
@@ -28,136 +28,110 @@
 <nav>
 <button class="active" onclick="show('dashboard',this)">मुख्यपृष्ठ</button>
 <button onclick="show('students',this)">विद्यार्थी</button>
-<button onclick="show('admission',this)">Admission</button>
+<button onclick="show('photos',this)">फोटो/Docs</button>
 <button onclick="show('teachers',this)">शिक्षक</button>
 <button onclick="show('attendance',this)">उपस्थिती</button>
-<button onclick="show('exam',this)">परीक्षा/निकाल</button>
+<button onclick="show('exam',this)">निकाल</button>
+<button onclick="show('rank',this)">Merit/Rank</button>
 <button onclick="show('certificates',this)">प्रमाणपत्रे</button>
 <button onclick="show('library',this)">ग्रंथालय</button>
-<button onclick="show('distribution',this)">वाटप/शिष्यवृत्ती</button>
+<button onclick="show('distribution',this)">वाटप</button>
 <button onclick="show('committees',this)">समित्या</button>
-<button onclick="show('fees',this)">फी</button>
-<button onclick="show('inventory',this)">स्टॉक</button>
-<button onclick="show('notices',this)">सूचना</button>
+<button onclick="show('fees',this)">फी/Receipt</button>
+<button onclick="show('notices',this)">सूचना/AI</button>
 <button onclick="show('whatsapp',this)">WhatsApp/SMS</button>
-<button onclick="show('firebase',this)">Firebase</button>
+<button onclick="show('cloud',this)">Cloud</button>
 <button onclick="show('reports',this)">Reports</button>
 <button onclick="show('settings',this)">Settings</button>
 </nav>
 
 <main>
 <section id="dashboard" class="page show"><div class="card">
-<h2>School ERP V20 Ultimate Enterprise Dashboard</h2>
+<h2>School ERP V21 Platinum Enterprise Dashboard</h2>
 <div class="tiles">
-<div><b id="studentCount">0</b><span>विद्यार्थी</span></div>
-<div><b id="teacherCount">0</b><span>शिक्षक</span></div>
-<div><b id="attToday">0</b><span>आज उपस्थित</span></div>
-<div><b id="feeDue">0</b><span>फी थकबाकी</span></div>
-<div><b id="bookCount">0</b><span>ग्रंथालय पुस्तके</span></div>
-<div><b id="noticeCount">0</b><span>सूचना</span></div>
+<div><b id="studentCount">0</b><span>विद्यार्थी</span></div><div><b id="teacherCount">0</b><span>शिक्षक</span></div><div><b id="attToday">0</b><span>आज उपस्थित</span></div><div><b id="feeDue">0</b><span>फी थकबाकी</span></div><div><b id="bookCount">0</b><span>पुस्तके</span></div><div><b id="noticeCount">0</b><span>सूचना</span></div>
 </div>
-<p class="note">V20 मध्ये Login, Role Permission, Firebase Cloud Sync setup, Admission, Exam, Result Card, Certificate, Library, Distribution, Fees, Committees, Inventory, Notice, WhatsApp/SMS आणि Excel Reports आहेत.</p>
+<p class="note">V21 Platinum: Report Card + Rank, LC/TC/Bonafide/ID/Hall Ticket, Library Return/Fine, Fee Receipt, Photo/Docs, AI Notice, WhatsApp/SMS, Backup/Restore.</p>
 </div></section>
 
-<section id="students" class="page"><div class="card">
-<h2>विद्यार्थी संपूर्ण प्रोफाइल</h2>
-<div class="form">
+<section id="students" class="page"><div class="card"><h2>विद्यार्थी संपूर्ण प्रोफाइल</h2><div class="form">
 <input id="sId" type="hidden"><input id="sName" placeholder="विद्यार्थी नाव">
 <select id="sClass"><option>8वी</option><option>9वी</option><option>10वी</option><option>11वी</option><option>12वी</option></select>
 <input id="sRoll" placeholder="हजेरी क्रमांक"><input id="sParent" placeholder="पालक WhatsApp/SMS 917507514475" maxlength="12">
 <input id="sMother" placeholder="आईचे नाव"><input id="sFather" placeholder="वडिलांचे नाव">
 <input id="sDob" type="date"><input id="sAadhar" maxlength="12" placeholder="आधार क्रमांक">
 <input id="sPen" placeholder="PEN / APAAR ID"><input id="sUdise" placeholder="UDISE / Student ID">
-<input id="sCaste" placeholder="जात / प्रवर्ग"><input id="sReligion" placeholder="धर्म">
-<input id="sAddress" placeholder="पत्ता"><input id="sBlood" placeholder="Blood Group">
+<input id="sCaste" placeholder="जात / प्रवर्ग"><input id="sAddress" placeholder="पत्ता">
 <button onclick="saveStudent()">Save Student</button><button onclick="clearStudent()">Clear</button>
 </div><table id="studentTable"></table></div></section>
 
-<section id="admission" class="page"><div class="card">
-<h2>Admission Register</h2>
-<div class="form">
-<select id="admStudent"></select><input id="admNo" placeholder="Admission No."><input id="admDate" type="date"><input id="admPrevSchool" placeholder="पूर्वीची शाळा"><input id="admClass" placeholder="प्रवेश वर्ग"><textarea id="admDocs" placeholder="Documents: जन्मदाखला, आधार, जात प्रमाणपत्र..."></textarea><button onclick="saveAdmission()">Save Admission</button>
-</div><table id="admTable"></table></div></section>
+<section id="photos" class="page"><div class="card"><h2>Student Photo / Documents</h2><div class="form">
+<select id="docStudent"></select><select id="docType"><option>विद्यार्थी फोटो</option><option>पालक फोटो</option><option>आधार कार्ड</option><option>जन्म दाखला</option><option>जात प्रमाणपत्र</option><option>उत्पन्न प्रमाणपत्र</option><option>उत्तरपत्रिका फोटो</option></select>
+<input id="docFile" type="file" accept="image/*,.pdf"><button onclick="saveDocument()">Save Document</button>
+</div><table id="docTable"></table></div></section>
 
-<section id="teachers" class="page"><div class="card">
-<h2>शिक्षक / कर्मचारी Service Book</h2><div class="form">
-<input id="tId" type="hidden"><input id="tName" placeholder="नाव"><input id="tMobile" placeholder="मोबाईल" maxlength="12"><input id="tSubject" placeholder="विषय/पद"><select id="tType"><option>Teacher</option><option>Clerk</option><option>Librarian</option><option>Peon</option></select><input id="tJoin" type="date"><input id="tSalary" placeholder="पगार/मानधन"><button onclick="saveTeacher()">Save</button><button onclick="clearTeacher()">Clear</button>
+<section id="teachers" class="page"><div class="card"><h2>शिक्षक / कर्मचारी</h2><div class="form">
+<input id="tId" type="hidden"><input id="tName" placeholder="नाव"><input id="tMobile" placeholder="मोबाईल"><input id="tSubject" placeholder="विषय/पद"><select id="tType"><option>Teacher</option><option>Clerk</option><option>Librarian</option><option>Peon</option></select><input id="tJoin" type="date"><input id="tSalary" placeholder="पगार"><button onclick="saveTeacher()">Save</button>
 </div><table id="teacherTable"></table></div></section>
 
-<section id="attendance" class="page"><div class="card">
-<h2>विद्यार्थी उपस्थिती</h2><div class="form">
+<section id="attendance" class="page"><div class="card"><h2>उपस्थिती</h2><div class="form">
 <input id="attDate" type="date"><select id="attClass"><option>8वी</option><option>9वी</option><option>10वी</option><option>11वी</option><option>12वी</option></select>
-<button onclick="loadAttendance()">यादी दाखवा</button><button onclick="saveAttendance()">Save Attendance</button><button onclick="sendAbsentBoth()">Absent WhatsApp + SMS</button>
+<button onclick="loadAttendance()">यादी दाखवा</button><button onclick="saveAttendance()">Save Attendance</button><button onclick="sendAbsentBoth()">Absent WhatsApp/SMS</button>
 </div><div id="attList"></div></div></section>
 
-<section id="exam" class="page"><div class="card">
-<h2>परीक्षा / निकालपत्र</h2><div class="form">
+<section id="exam" class="page"><div class="card"><h2>महाराष्ट्र बोर्ड नमुना निकालपत्र</h2><div class="form">
 <select id="resStudent"></select><select id="resExam"><option>Unit Test</option><option>प्रथम सत्र</option><option>द्वितीय सत्र</option><option>वार्षिक निकाल</option></select>
 <input id="resYear" placeholder="सन 2025 - 26"><input id="resAttendance" placeholder="वार्षिक उपस्थिती उदा. 92%">
 <textarea id="resMarks" placeholder="मराठी:50/100, हिंदी:43/100, इंग्रजी:53/100, गणित:69/100, विज्ञान:61/100, समाजशास्त्र:57/100"></textarea>
-<input id="resActivities" placeholder="शारीरिक शिक्षण:A, जलसुरक्षा:A, संरक्षणशास्त्र:A"><input id="resRemark" placeholder="Remark / निकाल">
+<input id="resActivities" placeholder="शारीरिक शिक्षण:A, जलसुरक्षा:A, संरक्षणशास्त्र:A"><input id="resRemark" placeholder="Remark">
 <button onclick="saveResult()">Save Result</button><button onclick="makeResultCard()">Generate Report Card</button><button onclick="window.print()">Print/PDF</button><button onclick="sendResultBoth()">WhatsApp/SMS निकाल</button>
 </div><div id="resultCard"></div><table id="resultTable"></table></div></section>
 
-<section id="certificates" class="page"><div class="card">
-<h2>प्रमाणपत्रे</h2><div class="form">
-<select id="certStudent"></select><select id="certType"><option>Bonafide Certificate</option><option>Leaving Certificate</option><option>Transfer Certificate</option><option>Character Certificate</option><option>Fee Certificate</option><option>Study Certificate</option><option>ID Card</option></select>
+<section id="rank" class="page"><div class="card"><h2>Merit List / Class Rank</h2><div class="form">
+<select id="rankClass"><option>8वी</option><option>9वी</option><option>10वी</option><option>11वी</option><option>12वी</option></select><button onclick="makeRank()">Generate Rank</button><button onclick="downloadRank()">Excel Download</button>
+</div><div id="rankBox"></div></div></section>
+
+<section id="certificates" class="page"><div class="card"><h2>प्रमाणपत्रे</h2><div class="form">
+<select id="certStudent"></select><select id="certType"><option>Bonafide Certificate</option><option>Leaving Certificate</option><option>Transfer Certificate</option><option>Character Certificate</option><option>Fee Certificate</option><option>ID Card</option><option>Hall Ticket</option></select>
 <input id="certReason" placeholder="कारण / उद्देश"><button onclick="makeCertificate()">Certificate तयार करा</button><button onclick="window.print()">Print/PDF</button>
 </div><div id="certBox"></div></div></section>
 
-<section id="library" class="page"><div class="card">
-<h2>ग्रंथालय</h2><div class="form">
+<section id="library" class="page"><div class="card"><h2>ग्रंथालय + Return/Fine</h2><div class="form">
 <input id="bookTitle" placeholder="पुस्तक नाव"><input id="bookAuthor" placeholder="लेखक"><input id="bookIsbn" placeholder="ISBN/Barcode"><input id="bookQty" type="number" placeholder="प्रमाण"><button onclick="saveBook()">Save Book</button>
 <select id="issueStudent"></select><select id="issueBook"></select><input id="issueDate" type="date"><button onclick="issueBookFn()">पुस्तक वाटप</button>
+<input id="returnIssueId" placeholder="Issue ID"><input id="fineAmt" type="number" placeholder="Fine"><button onclick="returnBook()">Return Book</button>
 </div><table id="bookTable"></table><h3>Issue Register</h3><table id="issueTable"></table></div></section>
 
-<section id="distribution" class="page"><div class="card">
-<h2>पुस्तक / गणवेश / शिष्यवृत्ती वाटप</h2><div class="form">
-<select id="distStudent"></select><select id="distItem"><option>पाठ्यपुस्तक</option><option>वही</option><option>गणवेश</option><option>शूज</option><option>सॉक्स</option><option>बॅग</option><option>शिष्यवृत्ती</option><option>सायकल</option></select>
-<input id="distDetails" placeholder="तपशील / Size / रक्कम"><input id="distDate" type="date"><button onclick="saveDistribution()">Save Distribution</button>
+<section id="distribution" class="page"><div class="card"><h2>पुस्तक / गणवेश / शिष्यवृत्ती वाटप</h2><div class="form">
+<select id="distStudent"></select><select id="distItem"><option>पाठ्यपुस्तक</option><option>वही</option><option>गणवेश</option><option>शूज</option><option>बॅग</option><option>शिष्यवृत्ती</option><option>सायकल</option></select><input id="distDetails" placeholder="तपशील / Size / रक्कम"><input id="distDate" type="date"><button onclick="saveDistribution()">Save Distribution</button>
 </div><table id="distTable"></table></div></section>
 
-<section id="committees" class="page"><div class="card">
-<h2>शाळेच्या समित्या</h2><div class="form">
-<select id="comType"><option>SMC</option><option>PTA</option><option>बाल संसद</option><option>विद्यार्थी परिषद</option><option>ग्रंथालय समिती</option><option>शिस्त समिती</option><option>क्रीडा समिती</option><option>परीक्षा समिती</option></select>
+<section id="committees" class="page"><div class="card"><h2>समित्या व ठराव</h2><div class="form">
+<select id="comType"><option>SMC</option><option>PTA</option><option>बाल संसद</option><option>विद्यार्थी परिषद</option><option>ग्रंथालय समिती</option><option>शिस्त समिती</option><option>क्रीडा समिती</option><option>परीक्षा समिती</option><option>Disaster Management</option><option>Child Safety</option></select>
 <input id="comName" placeholder="सदस्य नाव"><input id="comRole" placeholder="पद"><input id="comMobile" placeholder="मोबाईल"><textarea id="comMinutes" placeholder="बैठकीचे इतिवृत्त / ठराव"></textarea><button onclick="saveCommittee()">Save Committee</button>
 </div><table id="comTable"></table></div></section>
 
-<section id="fees" class="page"><div class="card">
-<h2>फी व्यवस्थापन</h2><div class="form">
-<select id="feeStudent"></select><input id="feeTotal" type="number" placeholder="एकूण फी"><input id="feePaid" type="number" placeholder="भरलेली फी"><input id="feeDate" type="date"><input id="feeRemark" placeholder="Remark"><button onclick="saveFee()">Save Fee</button><button onclick="sendFeeDueBoth()">थकबाकी WhatsApp/SMS</button>
-</div><table id="feeTable"></table></div></section>
+<section id="fees" class="page"><div class="card"><h2>फी व्यवस्थापन + Receipt</h2><div class="form">
+<select id="feeStudent"></select><input id="feeTotal" type="number" placeholder="एकूण फी"><input id="feePaid" type="number" placeholder="भरलेली फी"><input id="feeDate" type="date"><input id="feeRemark" placeholder="Remark"><button onclick="saveFee()">Save Fee</button><button onclick="makeReceipt()">Fee Receipt</button><button onclick="sendFeeDueBoth()">थकबाकी WhatsApp/SMS</button>
+</div><div id="receiptBox"></div><table id="feeTable"></table></div></section>
 
-<section id="inventory" class="page"><div class="card">
-<h2>स्टॉक / Asset</h2><div class="form">
-<input id="assetName" placeholder="साहित्य नाव"><select id="assetType"><option>फर्निचर</option><option>संगणक</option><option>प्रोजेक्टर</option><option>क्रीडा साहित्य</option><option>प्रयोगशाळा</option><option>स्टेशनरी</option><option>CCTV</option></select>
-<input id="assetQty" type="number" placeholder="प्रमाण"><input id="assetLocation" placeholder="ठिकाण"><button onclick="saveAsset()">Save Asset</button>
-</div><table id="assetTable"></table></div></section>
-
-<section id="notices" class="page"><div class="card">
-<h2>सूचना / AI Message Templates</h2><div class="form">
-<select id="noticeType"><option>शैक्षणिक कार्यक्रम</option><option>क्रीडा कार्यक्रम</option><option>सुट्टी सूचना</option><option>परीक्षा सूचना</option><option>फी सूचना</option><option>सहल सूचना</option><option>पालक सभा</option><option>सामान्य सूचना</option></select>
+<section id="notices" class="page"><div class="card"><h2>सूचना / AI Message Generator</h2><div class="form">
+<select id="noticeType"><option>शैक्षणिक कार्यक्रम</option><option>क्रीडा कार्यक्रम</option><option>सुट्टी सूचना</option><option>परीक्षा सूचना</option><option>फी सूचना</option><option>सहल सूचना</option><option>पालक सभा</option><option>गृहपाठ</option><option>सामान्य सूचना</option></select>
 <select id="noticeLang"><option value="mr">मराठी</option><option value="hi">हिंदी</option><option value="en">English</option></select>
 <textarea id="noticeText" placeholder="सूचना मजकूर"></textarea><button onclick="aiNotice()">AI Draft</button><button onclick="saveNotice()">Save Notice</button><button onclick="sendNoticeBoth()">Bulk WhatsApp/SMS</button>
 </div><textarea id="noticeUrls" readonly></textarea><table id="noticeTable"></table></div></section>
 
-<section id="whatsapp" class="page"><div class="card">
-<h2>WhatsApp + SMS API</h2><div class="form">
+<section id="whatsapp" class="page"><div class="card"><h2>WhatsApp + SMS API</h2><div class="form">
 <input id="waBase" value="https://whatsbot.tech/api"><input id="waToken" placeholder="WhatsApp API Token"><input id="waDevice" value="46120"><input id="waDefault" value="917507514475"><textarea id="waMsg">Test WhatsApp message</textarea><button onclick="saveWhatsApp()">Save WhatsApp</button><button onclick="sendWhatsAppTest()">Test WhatsApp</button>
 <input id="smsUrlTemplate" placeholder="SMS URL Template with {API_KEY},{MOBILE},{MESSAGE},{SENDER_ID}"><input id="smsApiKey" placeholder="SMS API Key"><input id="smsSender" placeholder="Sender ID"><button onclick="saveSmsApi()">Save SMS API</button>
 </div><textarea id="waUrl" readonly></textarea></div></section>
 
-<section id="firebase" class="page"><div class="card">
-<h2>Firebase Cloud Sync Setup</h2><p class="note">Firebase config paste करून Save करा. Sync बटण डेटा Cloud Firestore मध्ये पाठवण्यासाठी पुढील आवृत्तीत active होईल.</p>
-<div class="form"><textarea id="firebaseConfig" placeholder="Firebase config object paste करा"></textarea><button onclick="saveFirebase()">Save Firebase Config</button><button onclick="backupData()">Local Backup</button><input id="restoreFile" type="file"><button onclick="restoreData()">Restore</button></div></div></section>
+<section id="cloud" class="page"><div class="card"><h2>Cloud Backup / Firebase / Drive</h2><p class="note">Firebase config save करता येईल. Local backup/restore पूर्ण working आहे.</p>
+<div class="form"><textarea id="firebaseConfig" placeholder="Firebase config paste करा"></textarea><button onclick="saveFirebase()">Save Firebase Config</button><button onclick="backupData()">Backup JSON</button><input id="restoreFile" type="file"><button onclick="restoreData()">Restore JSON</button></div></div></section>
 
-<section id="reports" class="page"><div class="card">
-<h2>Reports</h2><div class="form"><select id="reportType"><option value="students">Students</option><option value="admissions">Admissions</option><option value="teachers">Teachers</option><option value="attendance">Attendance</option><option value="results">Results</option><option value="books">Books</option><option value="issues">Book Issues</option><option value="distributions">Distributions</option><option value="committees">Committees</option><option value="fees">Fees</option><option value="assets">Assets</option><option value="notices">Notices</option></select><button onclick="showReport()">Show</button><button onclick="downloadReport()">Excel</button><button onclick="window.print()">Print/PDF</button></div><div id="reportBox"></div></div></section>
+<section id="reports" class="page"><div class="card"><h2>Reports</h2><div class="form"><select id="reportType"><option value="students">Students</option><option value="documents">Documents</option><option value="teachers">Teachers</option><option value="attendance">Attendance</option><option value="results">Results</option><option value="books">Books</option><option value="issues">Book Issues</option><option value="distributions">Distributions</option><option value="committees">Committees</option><option value="fees">Fees</option><option value="notices">Notices</option></select><button onclick="showReport()">Show</button><button onclick="downloadReport()">Excel</button><button onclick="window.print()">Print/PDF</button></div><div id="reportBox"></div></div></section>
 
-<section id="settings" class="page"><div class="card">
-<h2>Settings / User Roles</h2><div class="form"><input id="setSchool" placeholder="शाळेचे नाव"><input id="setAddress" placeholder="पत्ता"><input id="setYear" placeholder="शैक्षणिक वर्ष 2025 - 26"><input id="adminMobile" placeholder="Admin WhatsApp 917507514475"><button onclick="saveGeneral()">Save Settings</button><button onclick="logout()">Logout</button></div>
-<p class="note">Roles: Admin, Principal, Teacher, Clerk, Librarian, Read Only. पुढील आवृत्तीत प्रत्येक role नुसार permission lock होईल.</p></div></section>
+<section id="settings" class="page"><div class="card"><h2>Settings</h2><div class="form"><input id="setSchool" placeholder="शाळेचे नाव"><input id="setAddress" placeholder="पत्ता"><input id="setYear" placeholder="शैक्षणिक वर्ष 2025 - 26"><input id="adminMobile" placeholder="Admin WhatsApp 917507514475"><button onclick="saveGeneral()">Save Settings</button><button onclick="logout()">Logout</button></div></div></section>
 </main>
 </div>
-<script src="app.js"></script>
-</body></html>
+<script src="app.js"></script></body></html>
