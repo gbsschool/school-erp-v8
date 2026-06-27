@@ -1,1 +1,1 @@
-export default function handler(req,res){res.status(200).json({status:true,message:'School ERP V29 Attendance Register Test Data API working'})}
+export default function handler(req,res){res.status(200).json({status:true,message:'School ERP V30 Professional Background API working'})}
