@@ -1,0 +1,1 @@
+export default async function handler(req,res){res.setHeader("Access-Control-Allow-Origin","*");try{const q=req.method==="POST"?req.body:req.query;const url=q.url;if(!url)return res.status(400).json({status:false,error:"url required"});const r=await fetch(url);res.status(200).send(await r.text())}catch(e){res.status(500).json({status:false,error:String(e)})}}
