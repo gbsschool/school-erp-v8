@@ -2,14 +2,14 @@
 <html lang="mr">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>School ERP V21 Platinum Enterprise</title>
+<title>School ERP V22 Diamond Enterprise</title>
 <link rel="stylesheet" href="style.css"><link rel="manifest" href="manifest.json">
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 </head>
 <body>
 <div id="loginScreen" class="login">
   <div class="loginBox">
-    <h2>School ERP V21 Platinum</h2>
+    <h2>School ERP V22 Diamond</h2>
     <input id="loginUser" placeholder="User ID" value="admin">
     <input id="loginPass" type="password" placeholder="Password" value="admin123">
     <button onclick="login()">Login</button>
@@ -42,16 +42,20 @@
 <button onclick="show('whatsapp',this)">WhatsApp/SMS</button>
 <button onclick="show('cloud',this)">Cloud</button>
 <button onclick="show('reports',this)">Reports</button>
+<button onclick="show('transport',this)">Transport</button>
+<button onclick="show('health',this)">Health</button>
+<button onclick="show('mdm',this)">MDM</button>
+<button onclick="show('audit',this)">Audit</button>
 <button onclick="show('settings',this)">Settings</button>
 </nav>
 
 <main>
 <section id="dashboard" class="page show"><div class="card">
-<h2>School ERP V21 Platinum Enterprise Dashboard</h2>
+<h2>School ERP V22 Diamond Enterprise Dashboard</h2>
 <div class="tiles">
 <div><b id="studentCount">0</b><span>विद्यार्थी</span></div><div><b id="teacherCount">0</b><span>शिक्षक</span></div><div><b id="attToday">0</b><span>आज उपस्थित</span></div><div><b id="feeDue">0</b><span>फी थकबाकी</span></div><div><b id="bookCount">0</b><span>पुस्तके</span></div><div><b id="noticeCount">0</b><span>सूचना</span></div>
 </div>
-<p class="note">V21 Platinum: Report Card + Rank, LC/TC/Bonafide/ID/Hall Ticket, Library Return/Fine, Fee Receipt, Photo/Docs, AI Notice, WhatsApp/SMS, Backup/Restore.</p>
+<p class="note">V22 Diamond Live: Report Card + Rank, LC/TC/Bonafide/ID/Hall Ticket, Library Return/Fine, Fee Receipt, Photo/Docs, AI Notice, WhatsApp/SMS, Backup/Restore.</p>
 </div></section>
 
 <section id="students" class="page"><div class="card"><h2>विद्यार्थी संपूर्ण प्रोफाइल</h2><div class="form">
@@ -130,6 +134,21 @@
 <div class="form"><textarea id="firebaseConfig" placeholder="Firebase config paste करा"></textarea><button onclick="saveFirebase()">Save Firebase Config</button><button onclick="backupData()">Backup JSON</button><input id="restoreFile" type="file"><button onclick="restoreData()">Restore JSON</button></div></div></section>
 
 <section id="reports" class="page"><div class="card"><h2>Reports</h2><div class="form"><select id="reportType"><option value="students">Students</option><option value="documents">Documents</option><option value="teachers">Teachers</option><option value="attendance">Attendance</option><option value="results">Results</option><option value="books">Books</option><option value="issues">Book Issues</option><option value="distributions">Distributions</option><option value="committees">Committees</option><option value="fees">Fees</option><option value="notices">Notices</option></select><button onclick="showReport()">Show</button><button onclick="downloadReport()">Excel</button><button onclick="window.print()">Print/PDF</button></div><div id="reportBox"></div></div></section>
+
+
+<section id="transport" class="page"><div class="card"><h2>Transport / Bus / GPS</h2><div class="form">
+<input id="busNo" placeholder="Bus No."><input id="driverName" placeholder="Driver Name"><input id="driverMobile" placeholder="Driver Mobile"><input id="routeName" placeholder="Route Name"><input id="gpsLink" placeholder="Google Map / GPS Link"><button onclick="saveTransport()">Save Transport</button>
+</div><table id="transportTable"></table></div></section>
+
+<section id="health" class="page"><div class="card"><h2>आरोग्य तपासणी</h2><div class="form">
+<select id="healthStudent"></select><input id="healthDate" type="date"><input id="heightVal" placeholder="Height"><input id="weightVal" placeholder="Weight"><input id="hbVal" placeholder="HB / Blood"><input id="healthRemark" placeholder="Remark"><button onclick="saveHealth()">Save Health</button>
+</div><table id="healthTable"></table></div></section>
+
+<section id="mdm" class="page"><div class="card"><h2>मध्यान्ह भोजन / MDM</h2><div class="form">
+<input id="mdmDate" type="date"><select id="mdmClass"><option>8वी</option><option>9वी</option><option>10वी</option><option>11वी</option><option>12वी</option></select><input id="mdmPresent" type="number" placeholder="लाभार्थी संख्या"><input id="mdmMenu" placeholder="आजचा मेनू"><button onclick="saveMDM()">Save MDM</button>
+</div><table id="mdmTable"></table></div></section>
+
+<section id="audit" class="page"><div class="card"><h2>Audit Log / Activity History</h2><p class="note">महत्त्वाच्या Save actions ची नोंद येथे दिसेल.</p><table id="auditTable"></table></div></section>
 
 <section id="settings" class="page"><div class="card"><h2>Settings</h2><div class="form"><input id="setSchool" placeholder="शाळेचे नाव"><input id="setAddress" placeholder="पत्ता"><input id="setYear" placeholder="शैक्षणिक वर्ष 2025 - 26"><input id="adminMobile" placeholder="Admin WhatsApp 917507514475"><button onclick="saveGeneral()">Save Settings</button><button onclick="logout()">Logout</button></div></div></section>
 </main>

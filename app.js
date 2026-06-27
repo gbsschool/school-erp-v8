@@ -1,14 +1,14 @@
 
 let D={students:[],documents:[],teachers:[],attendance:[],results:[],books:[],issues:[],distributions:[],committees:[],fees:[],notices:[]};
 const $=id=>document.getElementById(id), uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7), today=()=>new Date().toISOString().slice(0,10);
-const get=k=>JSON.parse(localStorage.getItem("v21_"+k)||"[]"), set=(k,v)=>localStorage.setItem("v21_"+k,JSON.stringify(v));
-const getObj=k=>JSON.parse(localStorage.getItem("v21_"+k)||"{}"), setObj=(k,v)=>localStorage.setItem("v21_"+k,JSON.stringify(v));
-function login(){if(loginUser.value=="admin"&&loginPass.value=="admin123"){loginScreen.style.display="none";appRoot.style.display="block";localStorage.setItem("v21_login","1")}else alert("User/Password तपासा")}
-function logout(){localStorage.removeItem("v21_login");location.reload()}
+const get=k=>JSON.parse(localStorage.getItem("v22_"+k)||"[]"), set=(k,v)=>localStorage.setItem("v22_"+k,JSON.stringify(v));
+const getObj=k=>JSON.parse(localStorage.getItem("v22_"+k)||"{}"), setObj=(k,v)=>localStorage.setItem("v22_"+k,JSON.stringify(v));
+function login(){if(loginUser.value=="admin"&&loginPass.value=="admin123"){loginScreen.style.display="none";appRoot.style.display="block";localStorage.setItem("v22_login","1")}else alert("User/Password तपासा")}
+function logout(){localStorage.removeItem("v22_login");location.reload()}
 function show(id,b){document.querySelectorAll(".page").forEach(p=>p.classList.remove("show"));$(id).classList.add("show");document.querySelectorAll("nav button").forEach(x=>x.classList.remove("active"));b.classList.add("active");refreshSelects();}
 function norm(n){n=String(n||"").replace(/\D/g,""); if(n.length==10)n="91"+n; return n}
 function valid(n){return /^91[0-9]{10}$/.test(norm(n))}
-window.onload=()=>{if(localStorage.getItem("v21_login")=="1"){loginScreen.style.display="none";appRoot.style.display="block"}["attDate","issueDate","distDate","feeDate"].forEach(i=>{if($(i))$(i).value=today()});loadAll();loadSettings();}
+window.onload=()=>{if(localStorage.getItem("v22_login")=="1"){loginScreen.style.display="none";appRoot.style.display="block"}["attDate","issueDate","distDate","feeDate"].forEach(i=>{if($(i))$(i).value=today()});loadAll();loadSettings();}
 function loadAll(){Object.keys(D).forEach(k=>D[k]=get(k));render();}
 function render(){studentCount.innerText=D.students.length;teacherCount.innerText=D.teachers.length;bookCount.innerText=D.books.length;noticeCount.innerText=D.notices.length;attToday.innerText=D.attendance.filter(a=>a.date==today()&&a.status=="Present").length;feeDue.innerText=D.fees.reduce((s,f)=>s+Number(f.balance||0),0);renderStudents();renderDocs();renderTeachers();renderResults();renderBooks();renderIssues();renderDist();renderCom();renderFees();renderNotices();refreshSelects();}
 function clearStudent(){["sId","sName","sRoll","sParent","sMother","sFather","sDob","sAadhar","sPen","sUdise","sCaste","sAddress"].forEach(i=>$(i).value="")}
@@ -61,5 +61,26 @@ function downloadReport(){downloadRows(reportType.value+".xlsx",D[reportType.val
 function saveGeneral(){let g={school:setSchool.value,address:setAddress.value,year:setYear.value,adminMobile:adminMobile.value};setObj("general",g);loadSettings();alert("Settings Save झाले")}
 function saveFirebase(){setObj("firebase",{config:firebaseConfig.value});alert("Firebase Config Save झाला")}
 function loadSettings(){let w=getObj("wa");waBase.value=w.base||"https://whatsbot.tech/api";waToken.value=w.token||"";waDevice.value=w.device||"46120";waDefault.value=w.mobile||"917507514475";let s=getObj("sms");smsUrlTemplate.value=s.tpl||"";smsApiKey.value=s.key||"";smsSender.value=s.sender||"SCHOOL";let f=getObj("firebase");firebaseConfig.value=f.config||"";let g=getObj("general");if(g.school)schoolTitle.innerText=g.school;if(g.address)schoolAddressTitle.innerText=g.address;if(g.year)academicYear.innerText=g.year;setSchool.value=g.school||"";setAddress.value=g.address||"";setYear.value=g.year||"शैक्षणिक वर्ष 2025 - 26";adminMobile.value=g.adminMobile||"917507514475"}
-function backupData(){let data={D,wa:getObj("wa"),sms:getObj("sms"),firebase:getObj("firebase"),general:getObj("general")};let b=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});let a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="school_erp_v21_backup.json";a.click()}
+function backupData(){let data={D,wa:getObj("wa"),sms:getObj("sms"),firebase:getObj("firebase"),general:getObj("general")};let b=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});let a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="school_erp_v22_backup.json";a.click()}
 async function restoreData(){let f=restoreFile.files[0];if(!f)return alert("Backup JSON निवडा");let data=JSON.parse(await f.text());Object.keys(data.D||{}).forEach(k=>set(k,data.D[k]));["wa","sms","firebase","general"].forEach(k=>{if(data[k])setObj(k,data[k])});loadAll();loadSettings();alert("Restore पूर्ण")}
+
+
+if(typeof D!=="undefined"){
+  D.transport=D.transport||[];
+  D.health=D.health||[];
+  D.mdm=D.mdm||[];
+  D.audit=D.audit||[];
+}
+const oldSet = typeof set==="function" ? set : null;
+function logAudit(action){try{D.audit=D.audit||get("audit");D.audit.push({id:uid(),action,date:new Date().toLocaleString()});set("audit",D.audit);renderAudit()}catch(e){}}
+function saveTransport(){D.transport=get("transport");D.transport.push({id:uid(),busNo:busNo.value,driver:driverName.value,mobile:driverMobile.value,route:routeName.value,gps:gpsLink.value});set("transport",D.transport);logAudit("Transport Saved");renderTransport();alert("Transport Save झाले")}
+function renderTransport(){if(!window.transportTable)return;D.transport=get("transport");transportTable.innerHTML="<tr><th>Bus</th><th>Driver</th><th>Mobile</th><th>Route</th><th>GPS</th></tr>"+D.transport.map(x=>`<tr><td>${x.busNo}</td><td>${x.driver}</td><td>${x.mobile}</td><td>${x.route}</td><td>${x.gps}</td></tr>`).join("")}
+function saveHealth(){let s=(D.students||get("students")).find(x=>x.id==healthStudent.value);D.health=get("health");D.health.push({id:uid(),student:s?.name||"",date:healthDate.value,height:heightVal.value,weight:weightVal.value,hb:hbVal.value,remark:healthRemark.value});set("health",D.health);logAudit("Health Saved");renderHealth();alert("Health Save झाले")}
+function renderHealth(){if(!window.healthTable)return;D.health=get("health");healthTable.innerHTML="<tr><th>Student</th><th>Date</th><th>Height</th><th>Weight</th><th>HB</th><th>Remark</th></tr>"+D.health.map(x=>`<tr><td>${x.student}</td><td>${x.date}</td><td>${x.height}</td><td>${x.weight}</td><td>${x.hb}</td><td>${x.remark}</td></tr>`).join("")}
+function saveMDM(){D.mdm=get("mdm");D.mdm.push({id:uid(),date:mdmDate.value,className:mdmClass.value,present:mdmPresent.value,menu:mdmMenu.value});set("mdm",D.mdm);logAudit("MDM Saved");renderMDM();alert("MDM Save झाले")}
+function renderMDM(){if(!window.mdmTable)return;D.mdm=get("mdm");mdmTable.innerHTML="<tr><th>Date</th><th>Class</th><th>Beneficiary</th><th>Menu</th></tr>"+D.mdm.map(x=>`<tr><td>${x.date}</td><td>${x.className}</td><td>${x.present}</td><td>${x.menu}</td></tr>`).join("")}
+function renderAudit(){if(!window.auditTable)return;D.audit=get("audit");auditTable.innerHTML="<tr><th>ID</th><th>Action</th><th>Date</th></tr>"+D.audit.slice().reverse().map(x=>`<tr><td>${x.id}</td><td>${x.action}</td><td>${x.date}</td></tr>`).join("")}
+const oldRenderV22 = typeof render==="function" ? render : null;
+if(oldRenderV22){
+  render=function(){oldRenderV22(); renderTransport(); renderHealth(); renderMDM(); renderAudit(); try{["healthStudent"].forEach(i=>{if($(i))$(i).innerHTML=(D.students||get("students")).map(s=>`<option value="${s.id}">${s.name} - ${s.className}</option>`).join("")});}catch(e){}}
+}
