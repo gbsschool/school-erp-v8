@@ -1,8 +1,7 @@
 {
-  "name": "School ERP V14 Working",
-  "short_name": "School ERP",
+  "name": "School ERP V16 WhatsApp API",
+  "short_name": "ERP V16",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#eef5f7",
   "theme_color": "#0b7285"
 }

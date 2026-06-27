@@ -1,8 +1,8 @@
 export default async function handler(req,res){
  res.setHeader("Access-Control-Allow-Origin","*");
  const q=req.method==="POST"?req.body:req.query;
- const {api_token,mobile,message,device_id}=q;
- const url="https://whatsbot.tech/api/send_sms?"+new URLSearchParams({api_token:api_token||"",mobile:mobile||"",message:message||"",device_id:device_id||""}).toString();
+ const type=q.type||"send_img"; delete q.type;
+ const url="https://whatsbot.tech/api/"+type+"?"+new URLSearchParams(q).toString();
  try{const r=await fetch(url); const text=await r.text(); res.status(200).send(text);}
  catch(e){res.status(500).json({status:false,error:String(e),url});}
 }

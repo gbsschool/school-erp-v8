@@ -1,36 +1,29 @@
 <!doctype html>
 <html lang="mr">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>School ERP V14 Working</title>
-<link rel="stylesheet" href="style.css">
-<link rel="manifest" href="manifest.json">
-<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>School ERP V16 WhatsApp API</title>
+<link rel="stylesheet" href="style.css"><link rel="manifest" href="manifest.json">
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 </head>
 <body>
-<header class="hero">
-  <div class="shade">
-    <img class="logo" src="assets/school-logo.jpg" onerror="this.style.display='none'">
-    <h1 id="schoolTitle">स्व. गुरुबक्षसिंग साबरवाल माध्यमिक व उच्च माध्यमिक विद्यालय</h1>
-    <h2 id="schoolAddressTitle">नायगाव (भिकापूर)</h2>
-    <p id="academicYear">शैक्षणिक वर्ष 2025 - 26</p>
-  </div>
-</header>
+<header class="hero"><div class="shade">
+<img class="logo" src="assets/school-logo.jpg" onerror="this.style.display='none'">
+<h1 id="schoolTitle">स्व. गुरुबक्षसिंग साबरवाल माध्यमिक व उच्च माध्यमिक विद्यालय</h1>
+<h2 id="schoolAddressTitle">नायगाव (भिकापूर)</h2>
+<p id="academicYear">शैक्षणिक वर्ष 2025 - 26</p>
+</div></header>
 
 <nav>
 <button class="active" onclick="show('dashboard',this)">मुख्यपृष्ठ</button>
 <button onclick="show('students',this)">विद्यार्थी</button>
 <button onclick="show('teachers',this)">शिक्षक</button>
-<button onclick="show('studentAtt',this)">विद्यार्थी उपस्थिती</button>
-<button onclick="show('teacherAtt',this)">शिक्षक उपस्थिती</button>
-<button onclick="show('homework',this)">गृहपाठ/वर्गकार्य</button>
+<button onclick="show('attendance',this)">उपस्थिती</button>
 <button onclick="show('templates',this)">SMS Templates</button>
-<button onclick="show('photos',this)">उत्तरपत्रिका फोटो</button>
+<button onclick="show('whatsapp',this)">WhatsApp API</button>
+<button onclick="show('media',this)">Audio / Image / Doc</button>
 <button onclick="show('results',this)">निकाल पत्रक</button>
-<button onclick="show('excel',this)">Excel</button>
+<button onclick="show('reports',this)">Reports</button>
 <button onclick="show('settings',this)">Settings</button>
 </nav>
 
@@ -38,174 +31,91 @@
 <section id="dashboard" class="page show"><div class="card">
 <h2>AutoPilot Dashboard</h2>
 <div class="tiles">
- <div><b id="studentCount">0</b><span>विद्यार्थी</span></div>
- <div><b id="teacherCount">0</b><span>शिक्षक</span></div>
- <div><b id="templateCount">0</b><span>SMS Templates</span></div>
- <div><b id="saveMode">Local</b><span>Save Mode</span></div>
+<div><b id="studentCount">0</b><span>विद्यार्थी</span></div>
+<div><b id="teacherCount">0</b><span>शिक्षक</span></div>
+<div><b id="tplCount">0</b><span>Templates</span></div>
+<div><b>V16</b><span>WhatsApp API + Audio</span></div>
 </div>
-<p class="note">V14 मध्ये Save Student, Save Teacher, Attendance, SMS Templates, Result Sheet हे बटण तपासून working केले आहे. Firebase चालला नाही तरी Local Storage मध्ये डेटा सेव्ह होतो.</p>
+<p class="note">WhatsApp नंबर नेहमी <b>91XXXXXXXXXX</b> या स्वरूपात सेव्ह होईल. उदा. <b>917507514475</b>. + चिन्ह किंवा space टाकण्याची गरज नाही.</p>
 </div></section>
 
 <section id="students" class="page"><div class="card">
 <h2>विद्यार्थी माहिती</h2>
 <div class="form">
-<input id="sEdit" type="hidden">
-<input id="sName" placeholder="विद्यार्थी नाव">
+<input id="sId" type="hidden"><input id="sName" placeholder="विद्यार्थी नाव">
 <select id="sClass"><option>8वी</option><option>9वी</option><option>10वी</option></select>
-<input id="sRoll" placeholder="हजेरी क्रमांक">
-<input id="sParent" placeholder="पालक मोबाईल 10 अंक" maxlength="10">
-<input id="sDob" type="date">
-<button onclick="saveStudent()">Save Student</button>
-<button onclick="clearStudent()">Clear</button>
-</div>
-<table id="studentTable"></table>
-</div></section>
+<input id="sRoll" placeholder="हजेरी क्रमांक"><input id="sParent" placeholder="पालक WhatsApp No. उदा. 917507514475" maxlength="12">
+<button onclick="saveStudent()">Save Student</button><button onclick="clearStudent()">Clear</button>
+</div><table id="studentTable"></table></div></section>
 
 <section id="teachers" class="page"><div class="card">
 <h2>शिक्षक माहिती</h2>
 <div class="form">
-<input id="tEdit" type="hidden">
-<input id="tName" placeholder="शिक्षक नाव">
-<input id="tMobile" placeholder="मोबाईल 10 अंक" maxlength="10">
-<input id="tSubject" placeholder="विषय शिक्षक">
-<select id="tClass"><option>8वी</option><option>9वी</option><option>10वी</option><option>सर्व</option></select>
-<input id="tUser" placeholder="User ID">
-<input id="tPass" placeholder="Password">
-<button onclick="saveTeacher()">Save Teacher</button>
-<button onclick="clearTeacher()">Clear</button>
-</div>
-<table id="teacherTable"></table>
-</div></section>
+<input id="tId" type="hidden"><input id="tName" placeholder="शिक्षक नाव"><input id="tMobile" placeholder="WhatsApp No. उदा. 917507514475" maxlength="12">
+<input id="tSubject" placeholder="विषय"><select id="tClass"><option>सर्व</option><option>8वी</option><option>9वी</option><option>10वी</option></select>
+<button onclick="saveTeacher()">Save Teacher</button><button onclick="clearTeacher()">Clear</button>
+</div><table id="teacherTable"></table></div></section>
 
-<section id="studentAtt" class="page"><div class="card">
+<section id="attendance" class="page"><div class="card">
 <h2>विद्यार्थी उपस्थिती</h2>
 <div class="form">
-<input id="attDate" type="date">
-<select id="attClass"><option>8वी</option><option>9वी</option><option>10वी</option></select>
-<button onclick="loadStudentAttendance()">यादी दाखवा</button>
-<button onclick="saveStudentAttendance()">Save Attendance</button>
-</div>
-<div id="studentAttList"></div>
-</div></section>
-
-<section id="teacherAtt" class="page"><div class="card">
-<h2>शिक्षक उपस्थिती</h2>
-<div class="form">
-<input id="tAttDate" type="date">
-<button onclick="loadTeacherAttendance()">यादी दाखवा</button>
-<button onclick="saveTeacherAttendance()">Save Teacher Attendance</button>
-</div>
-<div id="teacherAttList"></div>
-</div></section>
-
-<section id="homework" class="page"><div class="card">
-<h2>गृहपाठ / वर्गकार्य</h2>
-<div class="form">
-<input id="hwDate" type="date">
-<select id="hwClass"><option>8वी</option><option>9वी</option><option>10वी</option></select>
-<input id="hwSubject" placeholder="विषय">
-<textarea id="classwork" placeholder="वर्गकार्य"></textarea>
-<textarea id="homeworkText" placeholder="गृहपाठ"></textarea>
-<input id="hwLink" placeholder="फोटो/PDF/YouTube Link">
-<button onclick="loadHomeworkList()">विद्यार्थी यादी</button>
-<button onclick="saveHomework()">Save Homework</button>
-</div>
-<div id="hwList"></div>
-</div></section>
+<input id="attDate" type="date"><select id="attClass"><option>8वी</option><option>9वी</option><option>10वी</option></select>
+<button onclick="loadAttendance()">यादी दाखवा</button><button onclick="saveAttendance()">Save Attendance</button>
+</div><div id="attList"></div></div></section>
 
 <section id="templates" class="page"><div class="card">
-<h2>सर्व प्रकारचे SMS / WhatsApp Templates</h2>
+<h2>SMS / WhatsApp Templates</h2>
 <div class="form">
-<select id="tplType" onchange="fillTemplate()">
-<option value="">Template निवडा</option>
-<option>विद्यार्थी अनुपस्थित</option>
-<option>विद्यार्थी उपस्थित</option>
-<option>अर्धा दिवस रजा</option>
-<option>गृहपाठ केला नाही</option>
-<option>गृहपाठ / वर्गकार्य</option>
-<option>शैक्षणिक कार्यक्रम</option>
-<option>क्रीडा कार्यक्रम</option>
-<option>सुट्टी सूचना</option>
-<option>परीक्षा सूचना</option>
-<option>फी सूचना</option>
-<option>सहल सूचना</option>
-<option>पालक सभा</option>
-<option>वाढदिवस शुभेच्छा</option>
-<option>शिस्त सूचना</option>
-<option>उशीरा येणे</option>
-<option>आरोग्य सूचना</option>
-<option>निकाल सूचना</option>
-<option>कागदपत्र सूचना</option>
-<option>सामान्य सूचना</option>
+<select id="tplType" onchange="fillTpl()">
+<option value="">Template निवडा</option><option>अनुपस्थिती</option><option>गृहपाठ केला नाही</option><option>फी सूचना</option><option>परीक्षा सूचना</option><option>निकाल सूचना</option><option>पालक सभा</option><option>सुट्टी सूचना</option><option>शैक्षणिक कार्यक्रम</option><option>क्रीडा कार्यक्रम</option><option>सहल सूचना</option><option>वाढदिवस शुभेच्छा</option><option>सामान्य सूचना</option>
 </select>
-<select id="tplLang" onchange="fillTemplate()"><option value="mr">मराठी</option><option value="hi">हिंदी</option><option value="en">English</option></select>
-<textarea id="tplText" placeholder="Template text"></textarea>
-<button onclick="saveTemplate()">Template Save</button>
-<button onclick="sendTemplateAll()">सर्व पालकांना पाठवा</button>
+<select id="tplLang" onchange="fillTpl()"><option value="mr">मराठी</option><option value="hi">हिंदी</option><option value="en">English</option></select>
+<textarea id="tplText" placeholder="Template मजकूर"></textarea>
+<button onclick="saveTemplate()">Template Save</button><button onclick="sendTemplateToAll()">सर्व पालकांना WhatsApp</button>
+</div><table id="tplTable"></table></div></section>
+
+<section id="whatsapp" class="page"><div class="card">
+<h2>WhatsApp API Settings / Test</h2>
+<p class="note">तुमच्या WhatsBot नुसार API URL: <b>https://whatsbot.tech/api/send_sms</b>, API Token, Device ID <b>46120</b>, आणि WhatsApp नंबर <b>917507514475</b> या स्वरूपात वापरला आहे.</p>
+<div class="form">
+<input id="apiBase" placeholder="API Base URL" value="https://whatsbot.tech/api">
+<input id="apiToken" placeholder="API Token">
+<input id="deviceId" placeholder="Device ID" value="46120">
+<input id="defaultWhatsApp" placeholder="Default WhatsApp Number" value="917507514475" maxlength="12">
+<textarea id="testMessage" placeholder="Test Message">Test message from School ERP</textarea>
+<button onclick="saveApiSettings()">API Settings Save</button>
+<button onclick="sendTextMessage()">Send Text Test</button>
 </div>
-<table id="templateTable"></table>
+<h3>Generated URL</h3><textarea id="generatedUrl" readonly></textarea>
 </div></section>
 
-<section id="photos" class="page"><div class="card">
-<h2>उत्तरपत्रिका / वही / नोटबुक फोटो</h2>
+<section id="media" class="page"><div class="card">
+<h2>Audio / Image / Document / Video WhatsApp</h2>
 <div class="form">
-<select id="photoClass"><option>8वी</option><option>9वी</option><option>10वी</option></select>
-<input id="photoStudent" placeholder="विद्यार्थी नाव">
-<input id="photoSubject" placeholder="विषय">
-<input id="photoFile" type="file" accept="image/*" capture="environment">
-<textarea id="photoRemark" placeholder="Remark"></textarea>
-<button onclick="savePhotoRecord()">Record Save</button>
+<select id="mediaType"><option value="send_audio">Audio</option><option value="send_img">Image</option><option value="send_doc">Document</option><option value="send_video">Video</option></select>
+<input id="mediaMobile" placeholder="Mobile उदा. 917507514475" value="917507514475" maxlength="12">
+<input id="mediaUrl" placeholder="Audio/Image/Doc/Video public URL">
+<textarea id="mediaCaption" placeholder="Caption / Audio title"></textarea>
+<button onclick="generateMediaUrl()">Generate API URL</button>
+<button onclick="sendMedia()">Send Media</button>
 </div>
-<table id="photoTable"></table>
+<textarea id="mediaGeneratedUrl" readonly></textarea>
+<p class="note">टीप: WhatsBot मध्ये audio/img/doc/video पाठवण्यासाठी फाईलची public URL लागते. मोबाईल/लॅपटॉपमधील local file थेट पाठवता येत नाही; आधी ती online URL मध्ये upload करावी लागते.</p>
 </div></section>
 
 <section id="results" class="page"><div class="card">
-<h2>निकाल पत्रक तयार करा</h2>
-<p class="note">तुम्ही इयत्ता 8वी/9वीचा नमुना पाठवल्यावर त्यानुसार पुढील Version मध्ये PDF/Print format जोडता येईल. सध्या basic result entry आणि Excel download working आहे.</p>
-<div class="form">
-<input id="resExam" placeholder="परीक्षा नाव उदा. प्रथम सत्र">
-<select id="resClass"><option>8वी</option><option>9वी</option><option>10वी</option></select>
-<input id="resStudent" placeholder="विद्यार्थी नाव">
-<input id="resRoll" placeholder="हजेरी क्रमांक">
-<input id="resSubjects" placeholder="विषय व गुण उदा. गणित:75, मराठी:80">
-<input id="resRemark" placeholder="निकाल / Remark">
-<button onclick="saveResult()">Save Result</button>
-<button onclick="downloadResults()">Result Excel Download</button>
-</div>
-<table id="resultTable"></table>
-</div></section>
+<h2>निकाल पत्रक</h2>
+<div class="form"><select id="resClass"><option>8वी</option><option>9वी</option><option>10वी</option></select><input id="resName" placeholder="विद्यार्थी नाव"><input id="resMarks" placeholder="गणित:75, मराठी:80"><button onclick="saveResult()">Save Result</button><button onclick="download('results','results.xlsx')">Excel</button></div>
+<table id="resTable"></table></div></section>
 
-<section id="excel" class="page"><div class="card">
-<h2>Excel Upload / Download</h2>
-<div class="form">
-<select id="excelType"><option value="students">Students Upload</option><option value="teachers">Teachers Upload</option></select>
-<input id="excelFile" type="file" accept=".xlsx,.xls,.csv">
-<button onclick="uploadExcel()">Upload Excel</button>
-<button onclick="downloadStudents()">Students Excel</button>
-<button onclick="downloadTeachers()">Teachers Excel</button>
-<button onclick="downloadAttendance()">Attendance Excel</button>
-</div>
-</div></section>
+<section id="reports" class="page"><div class="card">
+<h2>Reports</h2>
+<div class="form"><select id="reportType"><option value="students">Students</option><option value="teachers">Teachers</option><option value="attendance">Attendance</option><option value="templates">Templates</option><option value="results">Results</option></select><button onclick="showReport()">Show Report</button><button onclick="downloadReport()">Excel Download</button><button onclick="window.print()">Print/PDF</button></div><div id="reportBox"></div></div></section>
 
 <section id="settings" class="page"><div class="card">
-<h2>Settings</h2>
-<div class="form">
-<input id="setSchool" placeholder="शाळेचे नाव">
-<input id="setAddress" placeholder="पत्ता">
-<input id="setYear" placeholder="शैक्षणिक वर्ष 2025 - 26">
-<input id="proxyUrl" placeholder="WhatsBot API URL /api">
-<input id="apiToken" placeholder="API Token">
-<input id="deviceId" placeholder="Device ID">
-<input id="principalMobile" placeholder="मुख्याध्यापक मोबाईल">
-<input id="presidentMobile" placeholder="अध्यक्ष मोबाईल">
-<input id="secretaryMobile" placeholder="सचिव मोबाईल">
-<button onclick="saveSettings()">Settings Save</button>
-<button onclick="testMessage()">Test Message</button>
-</div>
+<h2>General Settings</h2>
+<div class="form"><input id="setSchool" placeholder="शाळेचे नाव"><input id="setAddress" placeholder="पत्ता"><input id="setYear" placeholder="शैक्षणिक वर्ष 2025 - 26"><button onclick="saveGeneral()">Save Settings</button></div>
 </div></section>
 </main>
-
-<script src="firebase-config.js"></script>
 <script src="app.js"></script>
-</body>
-</html>
+</body></html>
