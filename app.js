@@ -1,6 +1,6 @@
 let D={students:[],teachers:[],attendance:[],results:[],fees:[],health:[],distribution:[],homework:[],photos:[],library:[],committees:[],notices:[],transport:[],mdm:[],audit:[]};
 const $=id=>document.getElementById(id), uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7), today=()=>new Date().toISOString().slice(0,10);
-const get=k=>JSON.parse(localStorage.getItem("v25_"+k)||localStorage.getItem("v24std_"+k)||"[]"), set=(k,v)=>{localStorage.setItem("v25_"+k,JSON.stringify(v));localStorage.setItem("v24std_"+k,JSON.stringify(v))}, getO=k=>JSON.parse(localStorage.getItem("v25_"+k)||localStorage.getItem("v24std_"+k)||"{}"), setO=(k,v)=>{localStorage.setItem("v25_"+k,JSON.stringify(v));localStorage.setItem("v24std_"+k,JSON.stringify(v))};
+const get=k=>JSON.parse(localStorage.getItem("v26_"+k)||localStorage.getItem("v24std_"+k)||"[]"), set=(k,v)=>{localStorage.setItem("v26_"+k,JSON.stringify(v));localStorage.setItem("v24std_"+k,JSON.stringify(v))}, getO=k=>JSON.parse(localStorage.getItem("v26_"+k)||localStorage.getItem("v24std_"+k)||"{}"), setO=(k,v)=>{localStorage.setItem("v26_"+k,JSON.stringify(v));localStorage.setItem("v24std_"+k,JSON.stringify(v))};
 function log(a){D.audit.push({date:new Date().toLocaleString(),action:a});set("audit",D.audit)}
 function show(id,b){document.querySelectorAll(".page").forEach(p=>p.classList.remove("show"));$(id).classList.add("show");document.querySelectorAll("nav button").forEach(x=>x.classList.remove("active"));b.classList.add("active");refreshSelects();renderAll()}
 window.onload=()=>{["attDate","distDate","mdmDate"].forEach(i=>{if($(i))$(i).value=today()});loadAll();loadSettings()}
@@ -33,7 +33,27 @@ function saveMDM(){D.mdm.push({date:mdmDate.value,className:mdmClass.value,count
 function renderAudit(){if(!window.auditTable)return;D.audit=get("audit");auditTable.innerHTML="<tr><th>Date</th><th>Action</th></tr>"+D.audit.map(x=>`<tr><td>${x.date}</td><td>${x.action}</td></tr>`).join("")}
 function saveSettings(){let g={school:setSchool.value,address:setAddress.value,year:setYear.value,principal:setPrincipal.value,chairman:setChairman.value,secretary:setSecretary.value,mobile:setMobile.value,logo:setLogo.value};setO("settings",g);loadSettings();alert("Settings Save झाले")}
 function loadSettings(){let g=getO("settings");if(g.school)schoolTitle.innerText=g.school;if(g.address)schoolAddressTitle.innerText=g.address;if(g.year)academicYear.innerText=g.year;if(g.logo)document.querySelector(".logoText").style.background=`#fff url('${g.logo}') center/cover no-repeat`;["School","Address","Year","Principal","Chairman","Secretary","Mobile","Logo"].forEach(k=>{let el=$("set"+k); if(el) el.value=g[k.toLowerCase()]||""});let w=getO("wa");if(window.waUrl){waUrl.value=w.url||"https://whatsbot.tech/api";waToken.value=w.token||"";waDevice.value=w.device||"";waMobile.value=w.mobile||"917507514475"}}
-function backupData(){let b=new Blob([JSON.stringify({D,settings:getO("settings"),wa:getO("wa"),sms:getO("sms"),firebase:getO("firebase")},null,2)],{type:"application/json"});let a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="school_erp_v25_backup.json";a.click()}
+function backupData(){let b=new Blob([JSON.stringify({D,settings:getO("settings"),wa:getO("wa"),sms:getO("sms"),firebase:getO("firebase")},null,2)],{type:"application/json"});let a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="school_erp_v26_backup.json";a.click()}
 async function restoreData(){let f=(restoreFile&&restoreFile.files[0])||(restoreFile2&&restoreFile2.files[0]);if(!f)return;let data=JSON.parse(await f.text());Object.keys(data.D||{}).forEach(k=>{D[k]=data.D[k];set(k,D[k])});["settings","wa","sms","firebase"].forEach(k=>{if(data[k])setO(k,data[k])});loadAll();loadSettings()}
 function showReport(){let rows=D[reportType.value]||[];reportBox.innerHTML="<table><tr>"+(rows[0]?Object.keys(rows[0]).map(h=>`<th>${h}</th>`).join(""):"")+"</tr>"+rows.map(r=>"<tr>"+Object.values(r).map(v=>`<td>${v}</td>`).join("")+"</tr>").join("")+"</table>"}
 function downloadReport(){let rows=D[reportType.value]||[];let ws=XLSX.utils.json_to_sheet(rows);let wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,"Report");XLSX.writeFile(wb,reportType.value+".xlsx")}
+
+/* V26 Permanent Menu Lock */
+(function(){
+ const expected = [["dashboard", "मुख्यपृष्ठ"], ["students", "विद्यार्थी"], ["teachers", "शिक्षक"], ["attendance", "उपस्थिती"], ["homework", "गृहपाठ"], ["photos", "फोटो/Docs"], ["certificates", "प्रमाणपत्रे"], ["results", "निकालपत्र"], ["fees", "Fees"], ["health", "Health"], ["distribution", "वाटप"], ["library", "ग्रंथालय"], ["committees", "समित्या"], ["notices", "सूचना"], ["whatsapp", "WhatsApp/SMS"], ["cloud", "Cloud"], ["transport", "Transport"], ["mdm", "MDM"], ["audit", "Audit"], ["settings", "Settings"], ["reports", "Reports"]];
+ function lockMenus(){
+   const nav=document.getElementById('mainNav');
+   if(!nav) return;
+   expected.forEach(([id,title])=>{
+     if(!nav.querySelector("button[onclick*="'"+id+"'"]")){
+       const b=document.createElement('button');
+       b.textContent=title;
+       b.onclick=function(){show(id,b)};
+       nav.appendChild(b);
+     }
+   });
+   nav.style.display='flex';nav.style.flexWrap='wrap';nav.style.overflow='visible';
+ }
+ window.addEventListener('DOMContentLoaded',()=>setTimeout(lockMenus,300));
+ setInterval(lockMenus,3000);
+})();

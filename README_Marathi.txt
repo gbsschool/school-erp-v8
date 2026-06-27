@@ -1,3 +1,3 @@
-School ERP V25 All Menu Complete Fix
-सर्व मेनू पुन्हा add केले आहेत.
-Commit Summary: School ERP V25 All Menu Complete Fix
+School ERP V26 Ultimate Production Edition
+सर्व मेनू कायम ठेवण्यासाठी Permanent Menu Lock जोडले आहे.
+Commit Summary: School ERP V26 Ultimate Production Edition
