@@ -2,6 +2,5 @@
   "scripts": {
     "start": "vercel dev"
   },
-  "dependencies": {},
-  "devDependencies": {}
+  "dependencies": {}
 }

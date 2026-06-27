@@ -1,3 +1,14 @@
-School ERP V10 AutoPortal Full
+School ERP V11 Professional PWA
 
-विद्यार्थी/शिक्षक उपस्थिती, गृहपाठ मेसेज, Summary, Excel Upload/Download, Logo placeholder.
+Features:
+- Website + mobile installable PWA.
+- Student master, teacher master.
+- Student attendance with Present/Absent/Half Day per student.
+- Teacher attendance with Present/Absent/Leave per teacher.
+- Homework/Classwork, link and photo input.
+- Answer sheet photo record. For real image upload/share, Firebase Storage Blaze plan is required.
+- Notice templates: academic, sports, holiday, exam, fee, tour, other.
+- Excel upload and reports download.
+- WhatsApp/SMS proxy.
+- Summary only to Principal, President, Secretary.
+- Parent messages for relevant student communication.

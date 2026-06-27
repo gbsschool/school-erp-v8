@@ -1,0 +1,9 @@
+{
+  "name": "School ERP V11 Professional",
+  "short_name": "School ERP",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#edf5f7",
+  "theme_color": "#0b7285",
+  "icons": []
+}
